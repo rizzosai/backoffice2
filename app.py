@@ -3531,5 +3531,672 @@ def debug():
     <br><a href="/">← Back</a>
     """
 
+# Affiliate system route with correct commission structure
+@app.route('/affiliate')
+def affiliate():
+    """Affiliate marketing system for promoting rizzosai.com - 100% commission except 2nd sale"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    username = session.get('username', 'Unknown')
+    affiliate_id = f"rizzos-{username.lower().replace(' ', '')}"
+    
+    # Generate affiliate links
+    main_site_link = f"https://rizzosai.com?ref={affiliate_id}"
+    backoffice_link = f"https://backoffice.rizzosai.com?ref={affiliate_id}"
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Affiliate Program - Rizzos AI</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1000px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; }}
+            .back-btn {{ background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; display: inline-block; margin-bottom: 20px; }}
+            .affiliate-card {{ background: #f7fafc; border-radius: 10px; padding: 20px; margin: 15px 0; border-left: 4px solid #667eea; }}
+            .commission-rate {{ background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0; }}
+            .link-box {{ background: #e2e8f0; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; }}
+            .copy-btn {{ background: #667eea; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; }}
+            .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }}
+            .stat-card {{ background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; text-align: center; }}
+        </style>
+        <script>
+            function copyToClipboard(text) {{
+                navigator.clipboard.writeText(text).then(function() {{
+                    alert('Link copied to clipboard!');
+                }});
+            }}
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            
+            <h1>💰 Affiliate Program - INSANE Commission Structure!</h1>
+            <p>Promote Rizzos AI and keep 100% of most sales! This is the most generous affiliate program in domain investing.</p>
+            
+            <div class="commission-rate">
+                <h2>🚀 REVOLUTIONARY COMMISSION STRUCTURE!</h2>
+                <p><strong>1st Sale:</strong> You keep 100% ($499.99 Elite / $999.99 Empire)</p>
+                <p><strong>2nd Sale:</strong> We keep this one (our cut)</p>
+                <p><strong>3rd Sale & Beyond:</strong> You keep 100% again!</p>
+                <p style="font-size: 1.2em; margin-top: 15px;"><strong>Average: 90%+ commission rate!</strong></p>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>👤 Your Affiliate Details</h3>
+                <p><strong>Affiliate ID:</strong> {affiliate_id}</p>
+                <p><strong>Status:</strong> Active VIP Affiliate</p>
+                <p><strong>Tier:</strong> {session.get('package', 'Elite')} Partner</p>
+                <p><strong>Commission Model:</strong> Revolutionary 100% Structure</p>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>🔗 Your Money-Making Links</h3>
+                
+                <h4>Main Website Link (Primary):</h4>
+                <div class="link-box">
+                    {main_site_link}
+                    <button class="copy-btn" onclick="copyToClipboard('{main_site_link}')">Copy</button>
+                </div>
+                
+                <h4>Backoffice Direct Link:</h4>
+                <div class="link-box">
+                    {backoffice_link}
+                    <button class="copy-btn" onclick="copyToClipboard('{backoffice_link}')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📊 Total Clicks</h3>
+                    <h2>0</h2>
+                    <p>Link clicks tracked</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💰 Sales Made</h3>
+                    <h2>0</h2>
+                    <p>Successful conversions</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💵 Your Earnings</h3>
+                    <h2>$0.00</h2>
+                    <p>Commission earned</p>
+                </div>
+                <div class="stat-card">
+                    <h3>🎯 Next Payout</h3>
+                    <h2>$0.00</h2>
+                    <p>Pending commission</p>
+                </div>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>🎯 Why This Program is INSANE</h3>
+                <ul>
+                    <li><strong>🚀 100% Commission:</strong> Keep entire sale amount on most sales</li>
+                    <li><strong>💎 High-Value Products:</strong> $499-$999 per sale (not $29 courses)</li>
+                    <li><strong>🎓 Premium Education:</strong> Easy to promote quality content</li>
+                    <li><strong>🤖 AI Assistant:</strong> Unique selling point with Coey</li>
+                    <li><strong>📈 Recurring Potential:</strong> Customers often upgrade</li>
+                    <li><strong>💼 Business Audience:</strong> High-income potential customers</li>
+                </ul>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>📱 Proven Marketing Messages</h3>
+                
+                <h4>High-Converting Headlines:</h4>
+                <ul>
+                    <li>"I'm making $10K/month buying domains - here's how"</li>
+                    <li>"This AI tool found me a $50K domain deal"</li>
+                    <li>"Why I quit my job to flip domains full-time"</li>
+                    <li>"The domain investing secrets rich people don't want you to know"</li>
+                </ul>
+                
+                <h4>Social Proof Angles:</h4>
+                <ul>
+                    <li>"Just learned the same strategies the pros use"</li>
+                    <li>"Finally found a course that actually works"</li>
+                    <li>"This AI assistant is like having a domain expert on speed dial"</li>
+                    <li>"Made my investment back in the first week"</li>
+                </ul>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>💡 Million-Dollar Marketing Tips</h3>
+                <ol>
+                    <li><strong>Target Entrepreneurs:</strong> People already investing in businesses</li>
+                    <li><strong>Use Success Stories:</strong> Share domain flip wins and case studies</li>
+                    <li><strong>Highlight AI Advantage:</strong> Coey assistant is unique selling point</li>
+                    <li><strong>Focus on ROI:</strong> Show potential returns vs course cost</li>
+                    <li><strong>Create Urgency:</strong> Limited-time bonuses or price increases</li>
+                    <li><strong>Build Trust First:</strong> Provide value before promoting</li>
+                </ol>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>📋 Commission Terms</h3>
+                <ul>
+                    <li><strong>Structure:</strong> 100% commission except every 2nd sale</li>
+                    <li><strong>Products:</strong> Elite ($499.99) & Empire ($999.99) packages</li>
+                    <li><strong>Cookie Duration:</strong> 30 days from click</li>
+                    <li><strong>Payment Method:</strong> PayPal or bank transfer</li>
+                    <li><strong>Payment Schedule:</strong> Weekly payouts</li>
+                    <li><strong>Minimum Payout:</strong> $100 (basically one sale)</li>
+                    <li><strong>Tracking:</strong> Real-time affiliate dashboard</li>
+                </ul>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                <h3>🔥 Ready to Make Serious Money?</h3>
+                <p><strong>This isn't your typical 5% affiliate program.</strong></p>
+                <p>We're giving you 90%+ commissions because we want you to succeed BIG.</p>
+                <p>Questions? Email: <a href="mailto:affiliates@rizzosai.com">affiliates@rizzosai.com</a></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+# Domain packages page route
+@app.route('/domain')
+def domain_packages():
+    """Domain packages selection page for domain.rizzosai.com"""
+    return """
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain.RizzosAI.com - Choose Your Package</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .packages-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .package {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .package:hover {
+            transform: translateY(-10px);
+        }
+
+        .package.featured {
+            border: 3px solid #ffd700;
+            transform: scale(1.05);
+        }
+
+        .package.popular {
+            border: 3px solid #ff6b35;
+        }
+
+        .package.starter {
+            border: 3px solid #28a745;
+        }
+
+        .package-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .badge-starter {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-popular {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .badge-featured {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .package-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #667eea;
+            margin-top: 20px;
+        }
+
+        .package-price {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .package-subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .package-features {
+            text-align: left;
+            margin: 30px 0;
+            list-style: none;
+        }
+
+        .package-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .package-features li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .value-proposition {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .testimonials {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .testimonial {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        .check {
+            color: #28a745;
+            font-size: 1.2em;
+        }
+
+        .cross {
+            color: #dc3545;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .packages-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .package-price {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Domain.RizzosAI.com</h1>
+            <p>Choose Your Domain Investing Package</p>
+            <p>From beginner-friendly to empire-building - we've got you covered!</p>
+        </div>
+
+        <div class="packages-section">
+            <div class="package starter">
+                <div class="package-badge badge-starter">BEST FOR BEGINNERS</div>
+                <div class="package-title">🚀 Starter</div>
+                <div class="package-price">$29</div>
+                <div class="package-subtitle">Perfect entry point</div>
+                <ul class="package-features">
+                    <li>Domain Investing Basics Course</li>
+                    <li>10 Proven Domain Lists</li>
+                    <li>Basic Coey AI Access</li>
+                    <li>Email Templates</li>
+                    <li>Community Access</li>
+                    <li>7-Day Money Back Guarantee</li>
+                    <li>PDF Guides & Checklists</li>
+                </ul>
+                <button class="buy-btn" onclick="selectPackage('starter', 29)">🚀 Start Your Journey</button>
+            </div>
+
+            <div class="package">
+                <div class="package-title">⚡ Accelerator</div>
+                <div class="package-price">$99</div>
+                <div class="package-subtitle">Speed up your success</div>
+                <ul class="package-features">
+                    <li>Everything in Starter Package</li>
+                    <li>Advanced Domain Strategies</li>
+                    <li>25 Premium Domain Lists</li>
+                    <li>Enhanced Coey AI Features</li>
+                    <li>Negotiation Masterclass</li>
+                    <li>Market Analysis Tools</li>
+                    <li>Monthly Live Training</li>
+                    <li>14-Day Money Back Guarantee</li>
+                    <li>Email & Discord Support</li>
+                </ul>
+                <button class="buy-btn" onclick="selectPackage('accelerator', 99)">⚡ Accelerate Growth</button>
+            </div>
+
+            <div class="package popular">
+                <div class="package-badge badge-popular">MOST POPULAR</div>
+                <div class="package-title">🔥 Professional</div>
+                <div class="package-price">$249</div>
+                <div class="package-subtitle">Serious investors choice</div>
+                <ul class="package-features">
+                    <li>Everything in Accelerator Package</li>
+                    <li>Professional Domain Portfolio</li>
+                    <li>40+ Premium Domain Lists</li>
+                    <li>Full Coey AI Suite</li>
+                    <li>Advanced Automation Scripts</li>
+                    <li>Weekly Strategy Sessions</li>
+                    <li>Priority Support</li>
+                    <li>21-Day Money Back Guarantee</li>
+                    <li>Private Telegram Group</li>
+                    <li>Monthly 1-on-1 Call</li>
+                </ul>
+                <button class="buy-btn" onclick="selectPackage('professional', 249)">🔥 Go Professional</button>
+            </div>
+
+            <div class="package">
+                <div class="package-title">💎 Elite</div>
+                <div class="package-price">$499</div>
+                <div class="package-subtitle">Elite investor status</div>
+                <ul class="package-features">
+                    <li>Everything in Professional Package</li>
+                    <li>Complete Domain Investing Masterclass</li>
+                    <li>50+ Premium Domain Lists</li>
+                    <li>Advanced Market Analysis Tools</li>
+                    <li>Private Discord Community</li>
+                    <li>Weekly Live Q&A Sessions</li>
+                    <li>Exclusive Domain Opportunities</li>
+                    <li>30-Day Money Back Guarantee</li>
+                    <li>Direct Access to Rizzos</li>
+                    <li>Quarterly Portfolio Review</li>
+                </ul>
+                <button class="buy-btn" onclick="selectPackage('elite', 499)">💎 Join Elite Club</button>
+            </div>
+
+            <div class="package featured">
+                <div class="package-badge badge-featured">ULTIMATE VALUE</div>
+                <div class="package-title">👑 Empire</div>
+                <div class="package-price">$999</div>
+                <div class="package-subtitle">Build your domain empire</div>
+                <ul class="package-features">
+                    <li>Everything in Elite Package</li>
+                    <li>3 Hours of 1-on-1 Coaching</li>
+                    <li>Done-For-You Domain Portfolio</li>
+                    <li>Advanced AI Automation Scripts</li>
+                    <li>Exclusive High-Value Domain Leads</li>
+                    <li>Personal Domain Investment Review</li>
+                    <li>VIP Access to New Strategies</li>
+                    <li>Lifetime Updates & Support</li>
+                    <li>Direct Phone/WhatsApp Access</li>
+                    <li>Joint Venture Opportunities</li>
+                </ul>
+                <button class="buy-btn" onclick="selectPackage('empire', 999)">👑 Build Your Empire</button>
+            </div>
+        </div>
+
+        <div class="value-proposition">
+            <h2>🎯 Why Choose Rizzos AI Domain Training?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3>🤖 AI-Powered</h3>
+                    <p>Coey AI assistant finds profitable domains 24/7</p>
+                </div>
+                <div>
+                    <h3>📈 Proven Results</h3>
+                    <p>Students making $10K+ monthly in domain profits</p>
+                </div>
+                <div>
+                    <h3>🎓 Complete Training</h3>
+                    <p>From basics to advanced empire-building strategies</p>
+                </div>
+                <div>
+                    <h3>💰 High ROI</h3>
+                    <p>Turn $100 investments into $10,000+ sales</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-table">
+            <h2 style="text-align: center; margin-bottom: 30px;">📊 Package Comparison</h2>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Starter</th>
+                    <th>Accelerator</th>
+                    <th>Professional</th>
+                    <th>Elite</th>
+                    <th>Empire</th>
+                </tr>
+                <tr>
+                    <td>Domain Lists</td>
+                    <td>10</td>
+                    <td>25</td>
+                    <td>40+</td>
+                    <td>50+</td>
+                    <td>50+</td>
+                </tr>
+                <tr>
+                    <td>Coey AI Access</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+                <tr>
+                    <td>Live Training</td>
+                    <td class="cross">✗</td>
+                    <td>Monthly</td>
+                    <td>Weekly</td>
+                    <td>Weekly</td>
+                    <td>Weekly</td>
+                </tr>
+                <tr>
+                    <td>1-on-1 Coaching</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td>Monthly</td>
+                    <td>Quarterly</td>
+                    <td>3 Hours</td>
+                </tr>
+                <tr>
+                    <td>Done-For-You Portfolio</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td class="check">✓</td>
+                </tr>
+                <tr>
+                    <td>Direct Access to Rizzos</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td class="cross">✗</td>
+                    <td class="check">✓</td>
+                    <td class="check">✓</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="testimonials">
+            <h2 style="text-align: center; margin-bottom: 30px;">💰 Success Stories</h2>
+            
+            <div class="testimonial">
+                <p>"Started with the $29 Starter package, made my money back in 2 days! Upgraded to Professional within a week."</p>
+                <strong>- Jake M., Professional Member</strong>
+            </div>
+            
+            <div class="testimonial">
+                <p>"The $249 Professional package changed my life. Making $5K+ monthly flipping domains now!"</p>
+                <strong>- Lisa R., Professional Member</strong>
+            </div>
+            
+            <div class="testimonial">
+                <p>"Empire package was the best investment I ever made. $100K in domain sales in 6 months!"</p>
+                <strong>- Marcus T., Empire Member</strong>
+            </div>
+
+            <div class="testimonial">
+                <p>"Coey AI found me a domain that sold for $50K. This system pays for itself!"</p>
+                <strong>- Sarah L., Elite Member</strong>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0; background: white; padding: 40px; border-radius: 20px;">
+            <h2>🔥 Ready to Start Your Domain Empire?</h2>
+            <p style="font-size: 1.2em; margin: 20px 0;">Choose your package above and start making money with domains today!</p>
+            <p><strong>Questions? Email:</strong> <a href="mailto:support@rizzosai.com">support@rizzosai.com</a></p>
+        </div>
+    </div>
+
+    <script>
+        function selectPackage(packageType, price) {
+            // Store package selection
+            localStorage.setItem('selectedPackage', packageType);
+            localStorage.setItem('selectedPrice', price);
+            
+            // Show confirmation
+            alert(`🎉 Great choice! You've selected the ${packageType.toUpperCase()} package for $${price}.\\n\\nRedirecting to secure checkout...`);
+            
+            // Redirect to checkout page
+            window.location.href = `/checkout?package=${packageType}&price=${price}`;
+        }
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add package hover effects
+        document.querySelectorAll('.package').forEach(package => {
+            package.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            package.addEventListener('mouseleave', function() {
+                if (this.classList.contains('featured')) {
+                    this.style.transform = 'scale(1.05)';
+                } else {
+                    this.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    """
+
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
