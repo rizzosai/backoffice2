@@ -1319,6 +1319,42 @@ def coey_onboarding():
     
     return onboarding_html
 
+@app.route('/coey/test')
+def coey_test():
+    """Test Coey AI connection - Admin only"""
+    if 'username' not in session or not session.get('is_admin'):
+        return "Access denied. Admin only."
+    
+    # Test OpenAI configuration
+    test_result = f"""
+    <h2>🔧 Coey AI Debug Information</h2>
+    <p><strong>API Key Status:</strong> {'✅ Set' if OPENAI_API_KEY and OPENAI_API_KEY != 'your_openai_api_key_here' else '❌ Not Set'}</p>
+    <p><strong>API Key Length:</strong> {len(OPENAI_API_KEY) if OPENAI_API_KEY else 0} characters</p>
+    <p><strong>API Key Preview:</strong> {OPENAI_API_KEY[:10] + '...' if OPENAI_API_KEY and len(OPENAI_API_KEY) > 10 else 'None'}</p>
+    
+    <h3>Testing OpenAI Connection:</h3>
+    """
+    
+    # Test the OpenAI function
+    test_messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Say 'Hello from Coey!' if this test works."}
+    ]
+    
+    response = get_openai_response(test_messages)
+    test_result += f"<p><strong>Response:</strong> {response}</p>"
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head><title>Coey Debug - Rizzos AI</title></head>
+    <body style="font-family: Arial; padding: 20px; max-width: 800px;">
+        {test_result}
+        <br><a href="/admin">← Back to Admin</a>
+    </body>
+    </html>
+    """
+
 # Additional utility routes
 @app.route('/guide/<guide_name>')
 def view_guide(guide_name):
