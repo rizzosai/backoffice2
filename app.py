@@ -65,7 +65,11 @@ def get_openai_response(messages, max_tokens=800, temperature=0.3):
     
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=OPENAI_API_KEY)
+        # Initialize client with only required parameters
+        client = OpenAI(
+            api_key=OPENAI_API_KEY,
+            timeout=30.0
+        )
         response = client.chat.completions.create(
             model="gpt-4",
             messages=messages,
@@ -77,10 +81,12 @@ def get_openai_response(messages, max_tokens=800, temperature=0.3):
         return "OpenAI library is not installed. Please contact support."
     except Exception as e:
         error_msg = str(e)
-        if "api_key" in error_msg.lower():
+        if "api_key" in error_msg.lower() or "authentication" in error_msg.lower():
             return "Invalid API key configuration. Please contact support."
         elif "model" in error_msg.lower():
             return "Model access issue. Please contact support."
+        elif "proxies" in error_msg.lower():
+            return "Network configuration issue. Please contact support."
         else:
             return f"Technical difficulties: {error_msg[:100]}..."
 
