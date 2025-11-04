@@ -181,7 +181,7 @@ def get_user_package(username):
 def get_package_guides(username):
     """Get available guides for user's package"""
     # Admin gets access to all guides (Empire level)
-    if username == ADMIN_USERNAME:
+    if username == ADMIN_USERNAME or username == 'rizzos-admin':
         return PACKAGES['empire']['guides']
     package = get_user_package(username)
     if package in PACKAGES:
@@ -3495,6 +3495,27 @@ Best regards,
         </div>
     </body>
     </html>
+    """
+
+@app.route('/debug-session')
+def debug_session():
+    """Debug route to check session and login status"""
+    debug_info = {
+        'session_data': dict(session),
+        'admin_username_env': ADMIN_USERNAME,
+        'admin_email_env': ADMIN_EMAIL,
+        'admin_password_env': ADMIN_PASSWORD,
+        'is_logged_in': 'username' in session,
+        'username': session.get('username'),
+        'is_admin': session.get('is_admin'),
+        'package': get_user_package(session.get('username', '')),
+        'available_guides': get_package_guides(session.get('username', ''))
+    }
+    
+    return f"""
+    <h1>🔍 Debug Information</h1>
+    <pre>{json.dumps(debug_info, indent=2)}</pre>
+    <br><a href="/">← Back to Dashboard</a>
     """
 
 if __name__ == '__main__':
