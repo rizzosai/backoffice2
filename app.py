@@ -445,15 +445,17 @@ def login():
             flash('Your account has been suspended. Please contact support.', 'error')
             return redirect(url_for('login'))
         
-        # Admin Authentication (requires 3 fields)
-        if username == ADMIN_USERNAME:
-            if (email == ADMIN_EMAIL and password == ADMIN_PASSWORD):
-                session['username'] = username
-                session['is_admin'] = True
-                return redirect(url_for('admin_dashboard'))
-            else:
-                flash('Invalid admin credentials. All fields are required for admin access.', 'error')
-                return redirect(url_for('login'))
+        # Admin Authentication (simplified - username and password only)
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['username'] = username
+            session['is_admin'] = True
+            return redirect(url_for('admin_dashboard'))
+        
+        # Also check admin by email
+        if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+            session['username'] = ADMIN_USERNAME
+            session['is_admin'] = True
+            return redirect(url_for('admin_dashboard'))
         
         # Regular User Authentication (username + password only)
         customers = load_customers()
@@ -570,10 +572,10 @@ def login():
                     <input type="password" id="password" name="password" required>
                 </div>
                 
-                <!-- Admin email field (hidden by default) -->
-                <div class="form-group" id="admin-email-group" style="display: none;">
-                    <label for="email">Admin Email (Required for Admin Login)</label>
-                    <input type="email" id="email" name="email">
+                <!-- Admin email field (always visible for flexibility) -->
+                <div class="form-group" id="admin-email-group">
+                    <label for="email">Email (Optional - for admin access)</label>
+                    <input type="email" id="email" name="email" placeholder="admin@rizzosai.com (for admin only)">
                 </div>
                 
                 <button type="submit" class="login-btn">Access Domain Empire</button>
