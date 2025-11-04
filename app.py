@@ -133,11 +133,17 @@ PACKAGES = {
 
 def get_user_package(username):
     """Get user's package from customers database"""
+    # Admin gets access to all packages (Empire level)
+    if username == ADMIN_USERNAME:
+        return 'empire'
     customers = load_customers()
     return customers.get(username, {}).get('package', 'starter')
 
 def get_package_guides(username):
     """Get available guides for user's package"""
+    # Admin gets access to all guides (Empire level)
+    if username == ADMIN_USERNAME:
+        return PACKAGES['empire']['guides']
     package = get_user_package(username)
     if package in PACKAGES:
         return PACKAGES[package]['guides']
