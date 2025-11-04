@@ -1116,6 +1116,209 @@ Always provide specific, actionable advice. Be encouraging but realistic about d
     
     return jsonify({'response': coey_response})
 
+@app.route('/coey/onboarding')
+def coey_onboarding():
+    """Coey AI Onboarding Assistant"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    username = session['username']
+    user_package = get_user_package(username)
+    
+    onboarding_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Coey Onboarding Assistant - Rizzos AI</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{ 
+                font-family: 'Arial', sans-serif; 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh; 
+                padding: 20px;
+            }}
+            .container {{
+                max-width: 900px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 15px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }}
+            .header {{
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #667eea;
+            }}
+            .header h1 {{
+                color: #333;
+                margin-bottom: 10px;
+            }}
+            .welcome-section {{
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 25px;
+                border-radius: 10px;
+                margin-bottom: 30px;
+                text-align: center;
+            }}
+            .step-card {{
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                border-left: 4px solid #667eea;
+            }}
+            .step-number {{
+                background: #667eea;
+                color: white;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                margin-right: 15px;
+            }}
+            .step-header {{
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }}
+            .action-btn {{
+                background: #28a745;
+                color: white;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 8px;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 10px 10px 0;
+                cursor: pointer;
+                transition: background 0.3s;
+            }}
+            .action-btn:hover {{
+                background: #218838;
+                color: white;
+                text-decoration: none;
+            }}
+            .secondary-btn {{
+                background: #6c757d;
+                color: white;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 8px;
+                text-decoration: none;
+                display: inline-block;
+                margin: 10px 10px 10px 0;
+                cursor: pointer;
+                transition: background 0.3s;
+            }}
+            .secondary-btn:hover {{
+                background: #5a6268;
+                color: white;
+                text-decoration: none;
+            }}
+            .package-info {{
+                background: #d4edda;
+                border: 1px solid #c3e6cb;
+                color: #155724;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }}
+            .chat-preview {{
+                background: #e7f3ff;
+                border: 1px solid #2196F3;
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 15px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🎯 Welcome to Your Domain Empire Journey!</h1>
+                <p>Your Personal AI Guide to Domain Investing Success</p>
+            </div>
+            
+            <div class="welcome-section">
+                <h2>👋 Hi {username}! I'm Coey, Your Domain Investing Assistant</h2>
+                <p>I'm here to guide you through building a profitable domain portfolio step by step. Let's turn your investment into a thriving domain empire!</p>
+                <div class="package-info">
+                    <strong>📦 Your Current Package:</strong> {PACKAGES.get(user_package, {{}}).get('name', 'Unknown')} | 
+                    <strong>🎯 Guides Available:</strong> {len(get_package_guides(username))}
+                </div>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <h3>🎓 Learn the Foundations</h3>
+                </div>
+                <p>Start with the essential knowledge every domain investor needs. Master the basics before moving to advanced strategies.</p>
+                <a href="/guide/domain-basics" class="action-btn">📚 Start Domain Basics Guide</a>
+                <a href="/guide/first-purchase-guide" class="secondary-btn">🛒 First Purchase Guide</a>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <h3>⚡ Quick Setup (24 Hours)</h3>
+                </div>
+                <p>Get your domain investing business set up in just one day. Tools, accounts, and your first opportunities identified.</p>
+                <a href="/guide/quick-setup" class="action-btn">🚀 24-Hour Setup Guide</a>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <h3>💰 Build Your Strategy</h3>
+                </div>
+                <p>Develop your investment approach based on your budget, risk tolerance, and market interests.</p>
+                <a href="/guide/investment-guide" class="action-btn">💎 Investment Strategies</a>
+                <a href="/guide/portfolio-building" class="secondary-btn">🏗️ Portfolio Building</a>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">4</span>
+                    <h3>🚀 Advanced Techniques</h3>
+                </div>
+                <p>Scale your empire with advanced strategies, market analysis, and negotiation tactics.</p>
+                <a href="/guide/advanced-strategies" class="action-btn">⚡ Advanced Strategies</a>
+                <a href="/guide/market-analysis" class="secondary-btn">📊 Market Analysis</a>
+            </div>
+            
+            <div class="chat-preview">
+                <h3>💬 Ask Coey Anything</h3>
+                <p>I'm here 24/7 to answer your domain investing questions. Try asking me:</p>
+                <ul>
+                    <li>"What's a good budget for my first domain purchase?"</li>
+                    <li>"How do I evaluate if a domain is worth buying?"</li>
+                    <li>"What are the hottest domain trends right now?"</li>
+                    <li>"How do I negotiate with domain sellers?"</li>
+                </ul>
+                <a href="/coey" class="action-btn">💬 Chat with Coey Now</a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/" class="secondary-btn">← Back to Dashboard</a>
+                <a href="/portfolio" class="action-btn">📊 View Portfolio Tools</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return onboarding_html
+
 # Additional utility routes
 @app.route('/guide/<guide_name>')
 def view_guide(guide_name):
