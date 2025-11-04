@@ -381,6 +381,7 @@ def dashboard():
                     <div style="margin-top: 15px;">
                         <a href="/coey" class="coey-btn">💬 Chat with Coey</a>
                         <a href="/coey/onboarding" class="coey-btn">🎯 Onboarding Assistant</a>
+                        <a href="/change-password" class="coey-btn">🔑 Change Password</a>
                     </div>
                 </div>
             </div>
@@ -393,33 +394,35 @@ def dashboard():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """3-Part Admin Authentication Login"""
+    """User and Admin Authentication Login"""
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
-        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
+        email = request.form.get('email', '').strip()  # Only required for admin
         
         # Check if user is banned
         if is_banned_user(username):
             flash('Your account has been suspended. Please contact support.', 'error')
             return redirect(url_for('login'))
         
-        # 3-Part Admin Authentication
-        if (username == ADMIN_USERNAME and 
-            email == ADMIN_EMAIL and 
-            password == ADMIN_PASSWORD):
-            session['username'] = username
-            session['is_admin'] = True
-            return redirect(url_for('admin_dashboard'))
+        # Admin Authentication (requires 3 fields)
+        if username == ADMIN_USERNAME:
+            if (email == ADMIN_EMAIL and password == ADMIN_PASSWORD):
+                session['username'] = username
+                session['is_admin'] = True
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash('Invalid admin credentials. All fields are required for admin access.', 'error')
+                return redirect(url_for('login'))
         
-        # Customer login - check against customer database
+        # Regular User Authentication (username + password only)
         customers = load_customers()
         if username in customers and customers[username].get('password') == password:
             session['username'] = username
             session['is_admin'] = False
             return redirect(url_for('dashboard'))
         
-        flash('Invalid credentials. All fields are required for admin access.', 'error')
+        flash('Invalid username or password.', 'error')
     
     login_html = """
     <!DOCTYPE html>
@@ -523,20 +526,48 @@ def login():
                     <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
+                
+                <!-- Admin email field (hidden by default) -->
+                <div class="form-group" id="admin-email-group" style="display: none;">
+                    <label for="email">Admin Email (Required for Admin Login)</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                
                 <button type="submit" class="login-btn">Access Domain Empire</button>
             </form>
             
-            <div class="security-note">
-                <h4>🔒 Enhanced Security</h4>
-                <p>3-part authentication ensures maximum security for your domain empire management.</p>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="/reset-password" style="color: #667eea; text-decoration: none; font-size: 14px;">
+                    🔑 Forgot Password?
+                </a>
             </div>
+            
+            <div class="security-note">
+                <h4>🔒 User-Friendly Login</h4>
+                <p>Regular users: Just username and password<br>
+                Admin: Username, password, and email required</p>
+            </div>
+            
+            <script>
+                // Show email field when admin username is detected
+                document.getElementById('username').addEventListener('input', function() {
+                    const username = this.value.toLowerCase();
+                    const emailGroup = document.getElementById('admin-email-group');
+                    const emailField = document.getElementById('email');
+                    
+                    if (username.includes('admin') || username === 'rizzos-admin') {
+                        emailGroup.style.display = 'block';
+                        emailField.required = true;
+                    } else {
+                        emailGroup.style.display = 'none';
+                        emailField.required = false;
+                        emailField.value = '';
+                    }
+                });
+            </script>
         </div>
     </body>
     </html>
@@ -678,6 +709,29 @@ def admin_dashboard():
                 </div>
             </div>
             
+            <!-- Quick Admin User Management -->
+            <div class="customers-section" style="margin-bottom: 30px;">
+                <h2>🔗 Quick Admin User Management</h2>
+                <p style="margin-bottom: 15px; color: #666;">Quickly promote users to Empire package or create new admin-linked users</p>
+                
+                <form method="POST" action="/quick-admin-link" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <input type="text" name="target_username" placeholder="Enter username" required 
+                           style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                    <button type="submit" name="action" value="promote" 
+                            style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                        👑 Promote to Empire
+                    </button>
+                    <button type="submit" name="action" value="demote" 
+                            style="background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                        📉 Demote to Starter
+                    </button>
+                </form>
+                
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 12px; color: #666;">
+                    <strong>Note:</strong> Promoting creates new users with Empire package access and default password "temppass123" if they don't exist.
+                </div>
+            </div>
+            
             <div class="customers-section">
                 <h2>Customer Management</h2>
                 <div class="action-buttons">
@@ -711,6 +765,58 @@ def logout():
     session.clear()
     flash('You have been logged out successfully.', 'success')
     return redirect(url_for('login'))
+
+@app.route('/quick-admin-link', methods=['POST'])
+def quick_admin_link():
+    """Quick admin user linking - Admin only"""
+    if 'username' not in session or not session.get('is_admin'):
+        flash('Access denied. Admin only.', 'error')
+        return redirect(url_for('login'))
+    
+    target_username = request.form.get('target_username', '').strip()
+    action = request.form.get('action', 'promote')  # promote or demote
+    
+    if not target_username:
+        flash('Username is required.', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
+    # Don't allow admin to modify their own account
+    if target_username == ADMIN_USERNAME:
+        flash('Cannot modify admin account through this interface.', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
+    customers = load_customers()
+    
+    if action == 'promote':
+        # Create or update user with admin-like privileges (Empire package)
+        if target_username not in customers:
+            # Create new user with Empire package
+            customers[target_username] = {
+                'password': 'temppass123',  # User should change this
+                'email': f'{target_username}@rizzosai.com',
+                'package': 'empire',
+                'created_at': datetime.now().isoformat(),
+                'admin_linked': True,
+                'needs_password_change': True
+            }
+            flash(f'User {target_username} created with Empire package access! Default password: temppass123', 'success')
+        else:
+            # Upgrade existing user to Empire package
+            customers[target_username]['package'] = 'empire'
+            customers[target_username]['admin_linked'] = True
+            flash(f'User {target_username} promoted to Empire package!', 'success')
+    
+    elif action == 'demote':
+        if target_username in customers:
+            customers[target_username]['package'] = 'starter'
+            customers[target_username]['admin_linked'] = False
+            flash(f'User {target_username} demoted to Starter package.', 'info')
+        else:
+            flash(f'User {target_username} not found.', 'error')
+            return redirect(url_for('admin_dashboard'))
+    
+    save_customers(customers)
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/owner-access')
 def owner_access():
