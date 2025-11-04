@@ -3497,25 +3497,24 @@ Best regards,
     </html>
     """
 
-@app.route('/debug-session')
-def debug_session():
-    """Debug route to check session and login status"""
-    debug_info = {
-        'session_data': dict(session),
-        'admin_username_env': ADMIN_USERNAME,
-        'admin_email_env': ADMIN_EMAIL,
-        'admin_password_env': ADMIN_PASSWORD,
-        'is_logged_in': 'username' in session,
-        'username': session.get('username'),
-        'is_admin': session.get('is_admin'),
-        'package': get_user_package(session.get('username', '')),
-        'available_guides': get_package_guides(session.get('username', ''))
-    }
+@app.route('/debug')
+def debug():
+    """Simple debug route"""
+    if 'username' not in session:
+        return "❌ NOT LOGGED IN"
+    
+    username = session.get('username')
+    package = get_user_package(username)
+    guides = get_package_guides(username)
     
     return f"""
-    <h1>🔍 Debug Information</h1>
-    <pre>{json.dumps(debug_info, indent=2)}</pre>
-    <br><a href="/">← Back to Dashboard</a>
+    <h1>🔍 Debug Info</h1>
+    <p><strong>Username:</strong> {username}</p>
+    <p><strong>Is Admin:</strong> {session.get('is_admin', False)}</p>
+    <p><strong>Package:</strong> {package}</p>
+    <p><strong>Guide Count:</strong> {len(guides)}</p>
+    <p><strong>Guides:</strong> {', '.join(guides)}</p>
+    <br><a href="/">← Back</a>
     """
 
 if __name__ == '__main__':
