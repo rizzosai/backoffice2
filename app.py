@@ -1039,3 +1039,138 @@ def view_guide(guide_name):
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+
+@app.route('/portfolio')
+def portfolio():
+    """Portfolio management page"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Portfolio - Rizzos AI</title>
+        <style>
+            body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }
+            .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; }
+            .back-btn { background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; }
+            .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+            .portfolio-card { background: #f7fafc; border-radius: 10px; padding: 20px; border-left: 4px solid #667eea; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            <h1>📊 Domain Portfolio Management</h1>
+            <p>Track and manage your domain investments</p>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-card">
+                    <h3>Portfolio Value</h3>
+                    <p>Total estimated value of your domain portfolio</p>
+                </div>
+                <div class="portfolio-card">
+                    <h3>Active Domains</h3>
+                    <p>Domains currently in your portfolio</p>
+                </div>
+                <div class="portfolio-card">
+                    <h3>Revenue Tracking</h3>
+                    <p>Monitor income from domain sales and parking</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+@app.route('/market')
+def market():
+    """Market analysis page"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Market Analysis - Rizzos AI</title>
+        <style>
+            body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }
+            .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; }
+            .back-btn { background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; }
+            .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+            .market-card { background: #f7fafc; border-radius: 10px; padding: 20px; border-left: 4px solid #48bb78; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            <h1>📈 Domain Market Analysis</h1>
+            <p>Real-time insights into domain market trends</p>
+            
+            <div class="market-grid">
+                <div class="market-card">
+                    <h3>Trending Extensions</h3>
+                    <p>Most popular domain extensions this month</p>
+                </div>
+                <div class="market-card">
+                    <h3>Price Trends</h3>
+                    <p>Historical price data and market movements</p>
+                </div>
+                <div class="market-card">
+                    <h3>Hot Keywords</h3>
+                    <p>High-value keywords and niches to watch</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+# Force logout route for admin management
+@app.route('/force-logout')
+def force_logout():
+    """Force logout for admin management"""
+    if 'username' not in session or not session.get('is_admin', False):
+        flash('Admin access required.', 'error')
+        return redirect(url_for('login'))
+    
+    session.clear()
+    flash('Forced logout completed.', 'success')
+    return redirect(url_for('login'))
+
+# Upgrade route for package upgrades
+@app.route('/upgrade-me')
+def upgrade_me():
+    """Package upgrade route"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Upgrade Package - Rizzos AI</title>
+        <style>
+            body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }
+            .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; text-align: center; }
+            .upgrade-btn { background: linear-gradient(135deg, #ff6b6b, #feca57); color: white; padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.2em; cursor: pointer; text-decoration: none; display: inline-block; margin: 10px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🚀 Upgrade Your Package</h1>
+            <p>Unlock more guides and features with our premium packages</p>
+            
+            <div style="margin-top: 30px;">
+                <a href="https://buy.stripe.com/elite" class="upgrade-btn">Elite Package - $499.99</a>
+                <a href="https://buy.stripe.com/empire" class="upgrade-btn">Empire Package - $999.99</a>
+            </div>
+            
+            <br><br>
+            <a href="/">← Back to Dashboard</a>
+        </div>
+    </body>
+    </html>
+    """
