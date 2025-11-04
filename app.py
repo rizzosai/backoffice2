@@ -1165,7 +1165,7 @@ def upgrade_me():
             
             <div style="margin-top: 30px;">
                 <a href="https://buy.stripe.com/14AbJ299E1os2Jp8Td1oI0h" class="upgrade-btn">Elite Package - $499.99</a>
-                <a href="https://buy.stripe.com/empire" class="upgrade-btn">Empire Package - $999.99</a>
+                <a href="https://buy.stripe.com/buy_btn_1SPfq6LBZ26m7XYVf8rQOlRA" class="upgrade-btn">Empire Package - $999.99</a>
             </div>
             
             <br><br>
