@@ -543,6 +543,10 @@ def login():
                     <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
@@ -672,6 +676,93 @@ def coey_chat_api():
         coey_response = "I'm having technical difficulties right now, but I can tell you that successful domain investing requires research, patience, and strategic thinking. What specific area would you like to explore?"
     
     return jsonify({'response': coey_response})
+
+@app.route('/admin')
+def admin_dashboard():
+    """Admin dashboard for managing customers and system"""
+    if 'username' not in session or not session.get('is_admin', False):
+        flash('Admin access required.', 'error')
+        return redirect(url_for('login'))
+    
+    # Load customer data
+    customers = load_customers()
+    banned_users = load_banned_users()
+    
+    # Count packages
+    package_counts = {}
+    for customer in customers.values():
+        package = customer.get('package', 'starter')
+        package_counts[package] = package_counts.get(package, 0) + 1
+    
+    admin_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Admin Dashboard V2 - Rizzos AI</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1200px; margin: 0 auto; }}
+            .header {{ background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center; }}
+            .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }}
+            .stat-card {{ background: rgba(255,255,255,0.95); border-radius: 10px; padding: 20px; text-align: center; }}
+            .stat-number {{ font-size: 2em; font-weight: bold; color: #667eea; }}
+            .customers-section {{ background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; }}
+            .customer-item {{ padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }}
+            .package-badge {{ padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.8em; }}
+            .starter {{ background: #48bb78; }}
+            .pro {{ background: #667eea; }}
+            .elite {{ background: #ff6b6b; }}
+            .empire {{ background: #feca57; color: black; }}
+            .empire-trial {{ background: #ff9ff3; }}
+            .logout-btn {{ background: #e53e3e; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🏆 Admin Dashboard V2 - Fresh & Clean</h1>
+                <p>Welcome, {session['username']} | <a href="/logout" class="logout-btn">Logout</a></p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{len(customers)}</div>
+                    <div>Total Customers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{package_counts.get('elite', 0)}</div>
+                    <div>Elite Customers ($499.99)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{package_counts.get('empire', 0)}</div>
+                    <div>Empire Customers ($999.99)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{len(banned_users)}</div>
+                    <div>Banned Users</div>
+                </div>
+            </div>
+            
+            <div class="customers-section">
+                <h2>Customer Management</h2>
+                {''.join([f'''
+                <div class="customer-item">
+                    <div>
+                        <strong>{username}</strong> ({customer.get('email', 'No email')})
+                        <br><small>Created: {customer.get('created_at', 'Unknown')}</small>
+                    </div>
+                    <div>
+                        <span class="package-badge {customer.get('package', 'starter')}">{PACKAGES.get(customer.get('package', 'starter'), {}).get('name', 'Unknown')}</span>
+                    </div>
+                </div>
+                ''' for username, customer in customers.items()])}
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return admin_html
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
