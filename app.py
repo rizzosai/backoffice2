@@ -9,9 +9,10 @@ app.secret_key = os.environ.get('SECRET_KEY', 'rizzos-secret-key-2024-secure')
 # Configure OpenAI for Coey - FRESH PROJECT V2
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
 
-# Admin credentials
-ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'rizzos2024')
+# Admin credentials - 3-part secure login
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'rizzos-secret-key-2024-secure')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'ai@rizzosai.com')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'GETFUCkeduCunt71')
 
 # Simple customer database (in production, use a real database)
 CUSTOMERS_FILE = 'customers.json'
@@ -424,6 +425,7 @@ def login():
     """Login page"""
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
         
         # Check if user is banned
@@ -431,8 +433,10 @@ def login():
             flash('Your account has been suspended. Please contact support.', 'error')
             return redirect(url_for('login'))
         
-        # Admin login
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        # Admin login - 3-part authentication
+        if (username == ADMIN_USERNAME and 
+            email == ADMIN_EMAIL and 
+            password == ADMIN_PASSWORD):
             session['username'] = username
             session['is_admin'] = True
             return redirect(url_for('admin_dashboard'))
@@ -444,7 +448,7 @@ def login():
             session['is_admin'] = False
             return redirect(url_for('dashboard'))
         
-        flash('Invalid username or password', 'error')
+        flash('Invalid credentials. All fields required for admin access.', 'error')
     
     login_html = """
     <!DOCTYPE html>
