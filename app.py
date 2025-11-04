@@ -167,8 +167,8 @@ def dashboard():
             trial_status = f"""
             <div class="trial-expired">
                 <h3>🚀 Trial Complete! Ready to Unlock Everything?</h3>
-                <p>You've explored {PACKAGES['empire-trial']['limit']} guides. Upgrade to Empire Package for unlimited access!</p>
-                <a href="https://buy.stripe.com/empire-upgrade" class="upgrade-btn">Upgrade to Empire Package - $999.99</a>
+                <p>You've explored {PACKAGES['empire-trial']['limit']} guides. Upgrade to Elite Package for unlimited access to all {len(PACKAGES['elite']['guides'])} premium guides!</p>
+                <a href="https://buy.stripe.com/14AbJ299E1os2Jp8Td1oI0h" class="upgrade-btn">Upgrade to Elite Package - $499.99</a>
             </div>
             """
         else:
@@ -1164,7 +1164,7 @@ def upgrade_me():
             <p>Unlock more guides and features with our premium packages</p>
             
             <div style="margin-top: 30px;">
-                <a href="https://buy.stripe.com/elite" class="upgrade-btn">Elite Package - $499.99</a>
+                <a href="https://buy.stripe.com/14AbJ299E1os2Jp8Td1oI0h" class="upgrade-btn">Elite Package - $499.99</a>
                 <a href="https://buy.stripe.com/empire" class="upgrade-btn">Empire Package - $999.99</a>
             </div>
             
