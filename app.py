@@ -64,13 +64,11 @@ def get_openai_response(messages, max_tokens=800, temperature=0.3):
         return "I'm currently not configured with an API key. Please contact support for assistance."
     
     try:
-        from openai import OpenAI
-        # Initialize client with only required parameters
-        client = OpenAI(
-            api_key=OPENAI_API_KEY,
-            timeout=30.0
-        )
-        response = client.chat.completions.create(
+        import openai
+        # Use the older OpenAI library syntax (v0.28.1)
+        openai.api_key = OPENAI_API_KEY
+        
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=messages,
             max_tokens=max_tokens,
@@ -83,10 +81,10 @@ def get_openai_response(messages, max_tokens=800, temperature=0.3):
         error_msg = str(e)
         if "api_key" in error_msg.lower() or "authentication" in error_msg.lower():
             return "Invalid API key configuration. Please contact support."
-        elif "model" in error_msg.lower():
+        elif "model" in error_msg.lower() or "not found" in error_msg.lower():
             return "Model access issue. Please contact support."
-        elif "proxies" in error_msg.lower():
-            return "Network configuration issue. Please contact support."
+        elif "network" in error_msg.lower() or "connection" in error_msg.lower():
+            return "Network connectivity issue. Please try again later."
         else:
             return f"Technical difficulties: {error_msg[:100]}..."
 
@@ -1135,12 +1133,508 @@ def view_guide(guide_name):
         flash('You do not have access to this guide. Please upgrade your package.', 'error')
         return redirect(url_for('dashboard'))
     
-    # Simple guide content (in a real app, this would come from a database)
-    guide_content = f"""
+    # Comprehensive guide content database
+    guide_contents = {
+        'Domain Basics': """
+        <h2>🌐 Domain Basics - Your Foundation to Success</h2>
+        
+        <h3>What Are Domains?</h3>
+        <p>A domain name is your digital real estate on the internet. Just like prime real estate locations, premium domains can be incredibly valuable assets that appreciate over time.</p>
+        
+        <h3>Why Domain Investing Works</h3>
+        <ul>
+            <li><strong>Scarcity:</strong> There's only one of each domain name</li>
+            <li><strong>Demand:</strong> Every business needs an online presence</li>
+            <li><strong>Branding Value:</strong> The right domain can make or break a brand</li>
+            <li><strong>Type-in Traffic:</strong> People naturally type certain domains</li>
+        </ul>
+        
+        <h3>Types of Valuable Domains</h3>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <p><strong>🏆 Exact Match Domains (EMDs):</strong> Insurance.com, Cars.com</p>
+            <p><strong>💰 Short Domains:</strong> 1-3 characters (.com, .net)</p>
+            <p><strong>🏢 Brandable Domains:</strong> Google.com, Spotify.com</p>
+            <p><strong>🌍 Geographic Domains:</strong> NewYork.com, London.org</p>
+            <p><strong>💊 Industry Domains:</strong> Crypto.com, Health.net</p>
+        </div>
+        
+        <h3>Domain Extensions Priority</h3>
+        <ol>
+            <li><strong>.com</strong> - The gold standard (90% of investment focus)</li>
+            <li><strong>.net</strong> - Second choice for tech/network businesses</li>
+            <li><strong>.org</strong> - For organizations and nonprofits</li>
+            <li><strong>Country TLDs</strong> - .co.uk, .de, .ca for local markets</li>
+        </ol>
+        
+        <h3>Key Success Metrics</h3>
+        <ul>
+            <li>Age of domain (older = more valuable)</li>
+            <li>Search volume for keywords</li>
+            <li>Brandability and memorability</li>
+            <li>Commercial intent of the keyword</li>
+            <li>Type-in traffic potential</li>
+        </ul>
+        
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; border-left: 4px solid #2196F3;">
+            <strong>💡 Pro Tip:</strong> Start with exact match domains in industries you understand. If you know real estate, look for RealEstate[City].com domains.
+        </div>
+        """,
+        
+        'First Purchase Guide': """
+        <h2>🎯 First Purchase Guide - Your First Domain Investment</h2>
+        
+        <h3>Step 1: Set Your Budget</h3>
+        <p>For beginners, start with a budget of $100-$500 per domain. This allows you to:</p>
+        <ul>
+            <li>Learn without major financial risk</li>
+            <li>Test different domain types</li>
+            <li>Understand market dynamics</li>
+            <li>Build confidence in your decisions</li>
+        </ul>
+        
+        <h3>Step 2: Research Tools You Need</h3>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🔍 Keyword Research:</strong></p>
+            <ul>
+                <li>Google Keyword Planner (free)</li>
+                <li>Ahrefs or SEMrush (paid)</li>
+                <li>Ubersuggest (freemium)</li>
+            </ul>
+            
+            <p><strong>📊 Domain Valuation:</strong></p>
+            <ul>
+                <li>Estibot.com</li>
+                <li>GoDaddy Domain Appraisal</li>
+                <li>NameWorth.com</li>
+            </ul>
+            
+            <p><strong>🏪 Marketplaces:</strong></p>
+            <ul>
+                <li>Sedo.com (largest marketplace)</li>
+                <li>Flippa.com (auctions)</li>
+                <li>Afternic.com (premium domains)</li>
+                <li>Dan.com (modern interface)</li>
+            </ul>
+        </div>
+        
+        <h3>Step 3: Find Your First Domain</h3>
+        <p><strong>Look for these characteristics:</strong></p>
+        <ol>
+            <li><strong>Clear commercial intent</strong> - LosAngelesPlumber.com</li>
+            <li><strong>High search volume</strong> - 1,000+ monthly searches</li>
+            <li><strong>Short and memorable</strong> - Under 20 characters</li>
+            <li><strong>.com extension</strong> - Always prioritize this</li>
+            <li><strong>No hyphens or numbers</strong> - Harder to remember and type</li>
+        </ol>
+        
+        <h3>Step 4: Due Diligence Checklist</h3>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <p><strong>⚠️ Before You Buy - Verify These:</strong></p>
+            <ul>
+                <li>✅ Domain history (use Wayback Machine)</li>
+                <li>✅ No trademark conflicts (search USPTO database)</li>
+                <li>✅ Clean backlink profile (use Ahrefs)</li>
+                <li>✅ Not banned from Google (search "site:domainname.com")</li>
+                <li>✅ Registrar reputation and transfer policies</li>
+            </ul>
+        </div>
+        
+        <h3>Step 5: Negotiation Strategy</h3>
+        <p><strong>Start with 30-50% of asking price:</strong></p>
+        <ul>
+            <li>Be polite and professional</li>
+            <li>Explain your intended use</li>
+            <li>Show genuine interest</li>
+            <li>Be prepared to walk away</li>
+            <li>Use escrow services for transactions over $1,000</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🎉 Success Framework:</strong> Your first purchase should be in a niche you understand. If you're a dentist, look for dental-related domains. Knowledge = Power = Profit.
+        </div>
+        """,
+        
+        'Quick Setup': """
+        <h2>⚡ Quick Setup - Get Started in 24 Hours</h2>
+        
+        <h3>Hour 1-2: Account Setup</h3>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🏪 Create Marketplace Accounts:</strong></p>
+            <ol>
+                <li><strong>Sedo.com</strong> - Main marketplace (free)</li>
+                <li><strong>GoDaddy Auctions</strong> - Daily expired domain auctions</li>
+                <li><strong>Flippa.com</strong> - Website and domain auctions</li>
+                <li><strong>Dan.com</strong> - Premium domain marketplace</li>
+            </ol>
+        </div>
+        
+        <h3>Hour 3-4: Research Tools Setup</h3>
+        <p><strong>🔧 Essential Tools Configuration:</strong></p>
+        <ul>
+            <li><strong>Google Keyword Planner:</strong> Set up Google Ads account (free)</li>
+            <li><strong>Namecheap Domain Search:</strong> Quick availability checks</li>
+            <li><strong>Whois Lookup Tools:</strong> Domain registration info</li>
+            <li><strong>Wayback Machine:</strong> Check domain history</li>
+        </ul>
+        
+        <h3>Hour 5-8: Market Research</h3>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>📊 Find Your Niche - Choose ONE to start:</strong></p>
+            <ul>
+                <li><strong>Local Services:</strong> [City] + [Service] (e.g., MiamiPlumbing.com)</li>
+                <li><strong>E-commerce:</strong> Product category domains</li>
+                <li><strong>Cryptocurrency:</strong> Crypto + [Term] combinations</li>
+                <li><strong>Health/Wellness:</strong> Medical and fitness terms</li>
+                <li><strong>Technology:</strong> AI, Software, App related domains</li>
+            </ul>
+        </div>
+        
+        <h3>Hour 9-16: First Domain Search</h3>
+        <p><strong>🎯 Systematic Approach:</strong></p>
+        <ol>
+            <li><strong>Keyword Research:</strong> Find 20 keywords in your chosen niche</li>
+            <li><strong>Domain Combinations:</strong> Create 50+ domain variations</li>
+            <li><strong>Availability Check:</strong> See what's available vs. taken</li>
+            <li><strong>Expired Domain Search:</strong> Check recent expires in your niche</li>
+            <li><strong>Auction Monitoring:</strong> Set up alerts for relevant auctions</li>
+        </ol>
+        
+        <h3>Hour 17-20: Valuation & Selection</h3>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>💰 Quick Valuation Method:</strong></p>
+            <ul>
+                <li><strong>Search Volume × $0.50</strong> = Base value (monthly searches)</li>
+                <li><strong>Commercial Intent Bonus:</strong> +50% for buying keywords</li>
+                <li><strong>Exact Match Bonus:</strong> +100% for exact keyword match</li>
+                <li><strong>.com Bonus:</strong> +200% over other extensions</li>
+            </ul>
+            <p><strong>Example:</strong> "Miami Dentist" = 2,000 searches × $0.50 = $1,000 base + commercial intent (+$500) + exact match (+$1,000) + .com (+$2,000) = $4,500 estimated value</p>
+        </div>
+        
+        <h3>Hour 21-24: Make Your Move</h3>
+        <p><strong>🚀 Time to Act:</strong></p>
+        <ul>
+            <li>Select your top 3 domain candidates</li>
+            <li>Set maximum bid/offer amounts</li>
+            <li>Contact sellers or place auction bids</li>
+            <li>Set up domain parking (if purchased)</li>
+            <li>Begin building your portfolio tracking system</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>✅ 24-Hour Goal:</strong> Have at least 3 serious domain opportunities identified and 1 offer submitted. Speed + Research = Success in domain investing.
+        </div>
+        """,
+        
+        'Advanced Strategies': """
+        <h2>🚀 Advanced Strategies - Scale Your Domain Empire</h2>
+        
+        <h3>Strategy 1: Expired Domain Goldmine</h3>
+        <p>Expired domains are pre-owned domains that weren't renewed. They often have existing SEO value, backlinks, and type-in traffic.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🏆 What Makes Expired Domains Valuable:</strong></p>
+            <ul>
+                <li><strong>Existing Backlinks:</strong> SEO authority already built</li>
+                <li><strong>Domain Age:</strong> Older domains rank better</li>
+                <li><strong>Type-in Traffic:</strong> People already know the domain</li>
+                <li><strong>Brand Recognition:</strong> Established online presence</li>
+            </ul>
+        </div>
+        
+        <h3>Strategy 2: Geographic Domain Domination</h3>
+        <p>Control entire geographic markets by acquiring city + service combinations.</p>
+        
+        <p><strong>📍 Geographic Strategy Framework:</strong></p>
+        <ol>
+            <li><strong>Choose a profitable service:</strong> Plumbing, Dental, Legal, Real Estate</li>
+            <li><strong>Target growing cities:</strong> Austin, Denver, Nashville, Phoenix</li>
+            <li><strong>Acquire variations:</strong></li>
+            <ul>
+                <li>[City][Service].com</li>
+                <li>[City][Service]s.com</li>
+                <li>[Service][City].com</li>
+                <li>Best[Service][City].com</li>
+            </ul>
+        </ol>
+        
+        <h3>Strategy 3: Industry Trend Surfing</h3>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>🌊 Ride the Wave - Current Hot Industries:</strong></p>
+            <ul>
+                <li><strong>AI/Machine Learning:</strong> AI[Industry].com</li>
+                <li><strong>Cryptocurrency:</strong> [Coin]Exchange.com</li>
+                <li><strong>Remote Work:</strong> Remote[JobType].com</li>
+                <li><strong>Sustainability:</strong> Green[Industry].com</li>
+                <li><strong>Telehealth:</strong> Online[MedicalService].com</li>
+            </ul>
+        </div>
+        
+        <h3>Strategy 4: Premium Domain Acquisition</h3>
+        <p><strong>💎 Going After $10K+ Domains:</strong></p>
+        <ul>
+            <li><strong>Payment Plans:</strong> Negotiate monthly payments</li>
+            <li><strong>Joint Ventures:</strong> Partner with others to split costs</li>
+            <li><strong>Development Deals:</strong> Offer to develop the domain</li>
+            <li><strong>Revenue Sharing:</strong> Propose ongoing revenue splits</li>
+        </ul>
+        
+        <h3>Strategy 5: Portfolio Syndication</h3>
+        <p>Create themed domain portfolios that sell as packages.</p>
+        
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>📦 Portfolio Package Examples:</strong></p>
+            <ul>
+                <li><strong>State Law Package:</strong> [State]Lawyer.com × 50 states</li>
+                <li><strong>Crypto Trading Suite:</strong> 20 crypto-related domains</li>
+                <li><strong>Health & Wellness Bundle:</strong> 30 health service domains</li>
+                <li><strong>E-commerce Category:</strong> Product-specific domain collections</li>
+            </ul>
+        </div>
+        
+        <h3>Strategy 6: International Expansion</h3>
+        <p><strong>🌍 Global Domain Strategy:</strong></p>
+        <ul>
+            <li><strong>Country Code TLDs:</strong> .co.uk, .de, .au, .ca</li>
+            <li><strong>Language Variations:</strong> English keywords in other TLDs</li>
+            <li><strong>Cultural Adaptation:</strong> Local business naming conventions</li>
+            <li><strong>Market Research:</strong> Understand local domain preferences</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>💡 Advanced Pro Tip:</strong> The most successful domain investors focus on becoming experts in 2-3 specific niches rather than trying to master everything. Deep knowledge = Higher profits.
+        </div>
+        """,
+        
+        'Investment Guide': """
+        <h2>💰 Investment Guide - Building Wealth Through Domains</h2>
+        
+        <h3>Investment Philosophy</h3>
+        <p>Domain investing is like real estate - location, timing, and market knowledge determine success. Unlike stocks, domains are unique assets that can't be duplicated.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Core Investment Principles:</strong></p>
+            <ol>
+                <li><strong>Scarcity Creates Value:</strong> Only one of each domain exists</li>
+                <li><strong>Utility Drives Demand:</strong> Businesses need memorable domains</li>
+                <li><strong>Brand Power:</strong> Great domains become brands themselves</li>
+                <li><strong>Digital Real Estate:</strong> Prime locations command premium prices</li>
+            </ol>
+        </div>
+        
+        <h3>Investment Categories & ROI Expectations</h3>
+        
+        <h4>💎 Premium Domains ($10K - $1M+)</h4>
+        <ul>
+            <li><strong>ROI:</strong> 15-25% annually</li>
+            <li><strong>Examples:</strong> Insurance.com, Voice.com, 360.com</li>
+            <li><strong>Strategy:</strong> Buy and hold 3-5 years</li>
+            <li><strong>Risk:</strong> Low (established value)</li>
+        </ul>
+        
+        <h4>🏆 Exact Match Domains ($1K - $50K)</h4>
+        <ul>
+            <li><strong>ROI:</strong> 25-50% annually</li>
+            <li><strong>Examples:</strong> ChicagoPlumber.com, OnlineMBA.com</li>
+            <li><strong>Strategy:</strong> Active marketing to end users</li>
+            <li><strong>Risk:</strong> Medium (market dependent)</li>
+        </ul>
+        
+        <h4>⚡ Trend Domains ($100 - $10K)</h4>
+        <ul>
+            <li><strong>ROI:</strong> 50-200% annually</li>
+            <li><strong>Examples:</strong> NFTMarket.com, TeleHealth.co</li>
+            <li><strong>Strategy:</strong> Quick flip within 1-2 years</li>
+            <li><strong>Risk:</strong> High (trend dependent)</li>
+        </ul>
+        
+        <h3>Portfolio Allocation Strategy</h3>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>📊 Recommended Portfolio Mix:</strong></p>
+            <ul>
+                <li><strong>40% Premium Domains:</strong> Stable, appreciating assets</li>
+                <li><strong>40% Exact Match:</strong> Active income generators</li>
+                <li><strong>20% Trend/Speculation:</strong> High-growth potential</li>
+            </ul>
+        </div>
+        
+        <h3>Financial Planning & Budgeting</h3>
+        
+        <h4>Starting Capital Requirements</h4>
+        <ul>
+            <li><strong>Beginner:</strong> $1,000 - $5,000 (5-10 domains)</li>
+            <li><strong>Intermediate:</strong> $10,000 - $50,000 (20-50 domains)</li>
+            <li><strong>Advanced:</strong> $100,000+ (Premium focus)</li>
+        </ul>
+        
+        <h4>Cash Flow Management</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>💸 Monthly Expenses to Budget:</strong></p>
+            <ul>
+                <li><strong>Renewal Fees:</strong> $10-15 per domain annually</li>
+                <li><strong>Research Tools:</strong> $100-500 monthly</li>
+                <li><strong>Marketing/Outreach:</strong> $200-1000 monthly</li>
+                <li><strong>Legal/Escrow:</strong> 3-5% of transaction value</li>
+            </ul>
+        </div>
+        
+        <h3>Tax Optimization Strategies</h3>
+        <p><strong>🏦 Maximize Your Returns:</strong></p>
+        <ul>
+            <li><strong>Business Structure:</strong> LLC for liability protection</li>
+            <li><strong>Expense Deductions:</strong> Research tools, travel, education</li>
+            <li><strong>Depreciation:</strong> Treat domains as business assets</li>
+            <li><strong>1031 Exchanges:</strong> Defer taxes on domain sales</li>
+        </ul>
+        
+        <h3>Exit Strategies</h3>
+        
+        <h4>When to Sell</h4>
+        <ol>
+            <li><strong>3x Purchase Price:</strong> Solid profit taking</li>
+            <li><strong>Industry Peak:</strong> Trend domains at maximum hype</li>
+            <li><strong>Cash Flow Needs:</strong> Liquidate for new opportunities</li>
+            <li><strong>End User Interest:</strong> Someone needs it for their business</li>
+        </ol>
+        
+        <h4>Selling Channels</h4>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <ul>
+                <li><strong>Direct Outreach:</strong> Contact potential end users</li>
+                <li><strong>Broker Networks:</strong> Professional domain brokers</li>
+                <li><strong>Auction Platforms:</strong> Sedo, Flippa, GoDaddy</li>
+                <li><strong>Domain Shows:</strong> NamesCon, DomainFest</li>
+            </ul>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>💡 Investment Success Formula:</strong> Research (40%) + Patience (30%) + Market Timing (20%) + Luck (10%) = Consistent Profits
+        </div>
+        """,
+        
+        'Portfolio Building': """
+        <h2>🏗️ Portfolio Building - Systematic Domain Accumulation</h2>
+        
+        <h3>Portfolio Foundation Strategy</h3>
+        <p>A strong domain portfolio is like a balanced investment portfolio - diversified across industries, price points, and risk levels.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🏗️ Building Blocks of Success:</strong></p>
+            <ol>
+                <li><strong>Foundation Layer:</strong> 5-10 premium .com domains</li>
+                <li><strong>Growth Layer:</strong> 20-30 exact match domains</li>
+                <li><strong>Speculation Layer:</strong> 10-20 trend/emerging domains</li>
+                <li><strong>International Layer:</strong> 5-10 ccTLD domains</li>
+            </ol>
+        </div>
+        
+        <h3>Acquisition Timeline & Milestones</h3>
+        
+        <h4>Year 1: Foundation (10-20 domains)</h4>
+        <ul>
+            <li><strong>Month 1-3:</strong> Research and acquire first 5 domains</li>
+            <li><strong>Month 4-6:</strong> Focus on one specific niche</li>
+            <li><strong>Month 7-9:</strong> Expand to second complementary niche</li>
+            <li><strong>Month 10-12:</strong> Add international variations</li>
+        </ul>
+        
+        <h4>Year 2: Growth (50+ domains)</h4>
+        <ul>
+            <li><strong>Reinvest all profits</strong> into new acquisitions</li>
+            <li><strong>Develop market expertise</strong> in chosen niches</li>
+            <li><strong>Build industry relationships</strong> with brokers and investors</li>
+            <li><strong>Start premium domain targeting</strong> ($10K+ acquisitions)</li>
+        </ul>
+        
+        <h3>Portfolio Diversification Matrix</h3>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>📊 Industry Diversification (Example $50K Portfolio):</strong></p>
+            <ul>
+                <li><strong>Healthcare (25%):</strong> $12,500 - Medical, dental, wellness</li>
+                <li><strong>Financial (20%):</strong> $10,000 - Banking, investing, crypto</li>
+                <li><strong>Technology (20%):</strong> $10,000 - AI, software, apps</li>
+                <li><strong>Local Services (15%):</strong> $7,500 - Plumbing, legal, real estate</li>
+                <li><strong>E-commerce (10%):</strong> $5,000 - Product categories</li>
+                <li><strong>Emerging Trends (10%):</strong> $5,000 - Speculation plays</li>
+            </ul>
+        </div>
+        
+        <h3>Quality Control Standards</h3>
+        
+        <h4>The RIZZOS Quality Framework</h4>
+        <p><strong>R</strong>elevant - Clear commercial application</p>
+        <p><strong>I</strong>ntuitive - Easy to remember and spell</p>
+        <p><strong>Z</strong>ero Conflicts - No trademark issues</p>
+        <p><strong>Z</strong>one Authority - Strong SEO potential</p>
+        <p><strong>O</strong>ptimal Length - Under 15 characters preferred</p>
+        <p><strong>S</strong>calable - Room for business growth</p>
+        
+        <h3>Portfolio Management Tools</h3>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>🛠️ Essential Management Tools:</strong></p>
+            <ul>
+                <li><strong>Spreadsheet Tracking:</strong> Purchase price, renewal dates, valuations</li>
+                <li><strong>Domain Registrar Management:</strong> Consolidate at 1-2 registrars</li>
+                <li><strong>Automated Renewals:</strong> Prevent accidental losses</li>
+                <li><strong>Performance Monitoring:</strong> Track inquiries and offers</li>
+                <li><strong>Market Value Updates:</strong> Quarterly valuation reviews</li>
+            </ul>
+        </div>
+        
+        <h3>Scaling Strategies</h3>
+        
+        <h4>Bootstrap Growth Method</h4>
+        <ol>
+            <li><strong>Start small:</strong> $1,000 initial investment</li>
+            <li><strong>Sell for 2-3x:</strong> Target quick wins</li>
+            <li><strong>Reinvest 80%:</strong> Keep 20% as profit</li>
+            <li><strong>Compound growth:</strong> Double portfolio every 18 months</li>
+        </ol>
+        
+        <h4>Leveraged Growth Method</h4>
+        <ul>
+            <li><strong>Business loans:</strong> Use domain portfolio as collateral</li>
+            <li><strong>Investor partnerships:</strong> Split profits 50/50</li>
+            <li><strong>Payment plans:</strong> Acquire premium domains over time</li>
+            <li><strong>Revenue sharing:</strong> Ongoing income from development</li>
+        </ul>
+        
+        <h3>Risk Management</h3>
+        
+        <h4>Portfolio Protection Strategies</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px; border-left: 4px solid #dc3545;">
+            <p><strong>⚠️ Risk Mitigation Checklist:</strong></p>
+            <ul>
+                <li>✅ Never put >10% in any single domain</li>
+                <li>✅ Maintain 6 months renewal fees in cash</li>
+                <li>✅ Diversify across multiple industries</li>
+                <li>✅ Regular trademark searches</li>
+                <li>✅ Backup registrar accounts</li>
+                <li>✅ Annual portfolio insurance review</li>
+            </ul>
+        </div>
+        
+        <h3>Exit Planning</h3>
+        <p><strong>🚪 Portfolio Exit Strategies:</strong></p>
+        <ul>
+            <li><strong>Gradual Liquidation:</strong> Sell 20% annually</li>
+            <li><strong>Portfolio Sale:</strong> Package deal to strategic buyer</li>
+            <li><strong>Development Exit:</strong> Build websites and sell businesses</li>
+            <li><strong>Legacy Planning:</strong> Transfer to next generation</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🎯 Portfolio Success Metric:</strong> Aim for 25% of your domains to generate 80% of your profits. Quality always beats quantity in domain investing.
+        </div>
+        """
+    }
+    
+    # Get the content for the specific guide, or default content if not found
+    guide_content = guide_contents.get(guide_display_name, f"""
     <h2>{guide_display_name}</h2>
-    <p>This is the content for {guide_display_name}. In a production system, this would contain detailed domain investing guidance, strategies, and actionable steps.</p>
+    <p>This guide is currently being developed with comprehensive content. Please check back soon for detailed strategies and actionable steps.</p>
     <p>Your current package gives you access to this premium content as part of the Rizzos AI Domain Empire system.</p>
-    """
+    """)
     
     return f"""
     <!DOCTYPE html>
@@ -1150,6 +1644,23 @@ def view_guide(guide_name):
         <style>
             body {{ font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }}
             .container {{ max-width: 800px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; }}
+            h2 {{ color: #333; border-bottom: 3px solid #667eea; padding-bottom: 10px; }}
+            h3 {{ color: #667eea; margin-top: 25px; }}
+            h4 {{ color: #555; margin-top: 20px; }}
+            ul, ol {{ line-height: 1.6; }}
+            li {{ margin-bottom: 5px; }}
+            .back-btn {{ display: inline-block; background: #667eea; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }}
+            .back-btn:hover {{ background: #5a6fd8; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            {guide_content}
+        </div>
+    </body>
+    </html>
+    """
             .back-btn {{ background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; }}
         </style>
     </head>
