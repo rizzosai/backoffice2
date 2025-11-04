@@ -60,7 +60,7 @@ def save_chat_memory(memory):
 
 def get_openai_response(messages, max_tokens=800, temperature=0.3):
     """Get response from OpenAI GPT-4 for Coey AI"""
-    if not OPENAI_API_KEY:
+    if not OPENAI_API_KEY or OPENAI_API_KEY == "your_openai_api_key_here":
         return "I'm currently not configured with an API key. Please contact support for assistance."
     
     try:
@@ -73,8 +73,16 @@ def get_openai_response(messages, max_tokens=800, temperature=0.3):
             temperature=temperature
         )
         return response.choices[0].message.content.strip()
+    except ImportError:
+        return "OpenAI library is not installed. Please contact support."
     except Exception as e:
-        return f"I'm experiencing technical difficulties. Please try again later. ({str(e)[:50]}...)"
+        error_msg = str(e)
+        if "api_key" in error_msg.lower():
+            return "Invalid API key configuration. Please contact support."
+        elif "model" in error_msg.lower():
+            return "Model access issue. Please contact support."
+        else:
+            return f"Technical difficulties: {error_msg[:100]}..."
 
 # Elite Package System - Domain Investing Guides
 PACKAGES = {
