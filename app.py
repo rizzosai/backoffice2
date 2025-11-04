@@ -18,6 +18,8 @@ ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'SecureAdmin2024!')
 CUSTOMERS_FILE = 'customers.json'
 BANNED_USERS_FILE = 'banned_users.json'
 CHAT_MEMORY_FILE = 'chat_memory.json'
+AFFILIATES_FILE = 'affiliates.json'
+AFFILIATE_SALES_FILE = 'affiliate_sales.json'
 
 def load_customers():
     """Load customers from JSON file"""
@@ -57,6 +59,39 @@ def save_chat_memory(memory):
     """Save chat conversation memory"""
     with open(CHAT_MEMORY_FILE, 'w') as f:
         json.dump(memory, f, indent=2)
+
+def load_affiliates():
+    """Load affiliates from JSON file"""
+    try:
+        with open(AFFILIATES_FILE, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def save_affiliates(affiliates):
+    """Save affiliates to JSON file"""
+    with open(AFFILIATES_FILE, 'w') as f:
+        json.dump(affiliates, f, indent=2)
+
+def load_affiliate_sales():
+    """Load affiliate sales from JSON file"""
+    try:
+        with open(AFFILIATE_SALES_FILE, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_affiliate_sales(sales):
+    """Save affiliate sales to JSON file"""
+    with open(AFFILIATE_SALES_FILE, 'w') as f:
+        json.dump(sales, f, indent=2)
+
+def generate_affiliate_code(username):
+    """Generate unique affiliate code"""
+    import hashlib
+    import random
+    base = f"{username}{random.randint(1000, 9999)}"
+    return hashlib.md5(base.encode()).hexdigest()[:8].upper()
 
 def get_openai_response(messages, max_tokens=800, temperature=0.3):
     """Get response from OpenAI GPT-4 for Coey AI"""
@@ -376,6 +411,7 @@ def dashboard():
                         <a href="/portfolio" class="coey-btn">📊 Portfolio</a>
                         <a href="/market" class="coey-btn">📈 Market Data</a>
                         <a href="/tools" class="coey-btn">🛠️ Tools</a>
+                        <a href="/affiliate" class="coey-btn">💰 Affiliate Program</a>
                     </div>
                 </div>
                 
@@ -1751,6 +1787,218 @@ def view_guide(guide_name):
         </div>
         """,
         
+        'Market Analysis': """
+        <h2>📊 Market Analysis - Reading Domain Market Signals</h2>
+        
+        <h3>Market Intelligence Framework</h3>
+        <p>Understanding market dynamics is crucial for timing acquisitions and sales perfectly.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>📈 Key Market Indicators:</strong></p>
+            <ol>
+                <li><strong>Sales Volume:</strong> Weekly transaction reports</li>
+                <li><strong>Price Trends:</strong> YoY appreciation rates by category</li>
+                <li><strong>Industry Growth:</strong> Business formation in target sectors</li>
+                <li><strong>Search Volume:</strong> Google Trends for keywords</li>
+                <li><strong>Investment Flow:</strong> VC funding in target industries</li>
+            </ol>
+        </div>
+        
+        <h3>Industry Cycle Analysis</h3>
+        
+        <h4>🚀 Growth Phase Indicators</h4>
+        <ul>
+            <li><strong>Media Coverage:</strong> Increasing news mentions</li>
+            <li><strong>New Business Formation:</strong> Rising LLC registrations</li>
+            <li><strong>Domain Registration Surge:</strong> Related TLD activity</li>
+            <li><strong>Search Trend Growth:</strong> 50%+ YoY increase</li>
+            <li><strong>Investment Capital:</strong> VC/PE funding rounds</li>
+        </ul>
+        
+        <h4>⚠️ Peak Phase Warning Signs</h4>
+        <ul>
+            <li><strong>Mainstream Adoption:</strong> Everyone talking about it</li>
+            <li><strong>Domain Price Explosion:</strong> 10x+ price increases</li>
+            <li><strong>Speculation Frenzy:</strong> Low-quality domains selling high</li>
+            <li><strong>Media Saturation:</strong> Daily news coverage</li>
+            <li><strong>Celebrity Endorsements:</strong> Famous people promoting</li>
+        </ul>
+        
+        <h3>Competitive Intelligence</h3>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>🕵️ Monitor Your Competition:</strong></p>
+            <ul>
+                <li><strong>Domain Auction Activity:</strong> Track who's buying what</li>
+                <li><strong>Portfolio Analysis:</strong> Study successful investors</li>
+                <li><strong>Price Sensitivity:</strong> Watch bidding patterns</li>
+                <li><strong>Exit Strategies:</strong> When top investors sell</li>
+                <li><strong>Geographic Focus:</strong> Regional investment patterns</li>
+            </ul>
+        </div>
+        
+        <h3>Valuation Methodologies</h3>
+        
+        <h4>📊 Comparable Sales Analysis</h4>
+        <p>Find similar domains that sold recently and adjust for differences.</p>
+        <ul>
+            <li><strong>Exact Match:</strong> Same keywords, different TLD</li>
+            <li><strong>Similar Industry:</strong> Same sector, related keywords</li>
+            <li><strong>Geographic Variation:</strong> Same service, different city</li>
+            <li><strong>Brand Strength:</strong> Memorability and brandability</li>
+        </ul>
+        
+        <h4>💰 Revenue Multiple Method</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Calculate Based on Business Potential:</strong></p>
+            <ul>
+                <li><strong>Service Industry:</strong> 0.5-2x annual revenue potential</li>
+                <li><strong>E-commerce:</strong> 1-3x annual revenue potential</li>
+                <li><strong>SaaS/Tech:</strong> 2-5x annual revenue potential</li>
+                <li><strong>Finance/Insurance:</strong> 3-10x annual revenue potential</li>
+            </ul>
+        </div>
+        
+        <h3>Market Timing Strategies</h3>
+        
+        <h4>🎯 Best Buying Opportunities</h4>
+        <ol>
+            <li><strong>Market Corrections:</strong> 20-30% price drops</li>
+            <li><strong>End of Year:</strong> Tax-loss selling pressure</li>
+            <li><strong>Economic Uncertainty:</strong> Flight to quality assets</li>
+            <li><strong>Industry Downturns:</strong> Temporary pessimism</li>
+            <li><strong>Expiring Domains:</strong> Owner financial stress</li>
+        </ol>
+        
+        <h4>💎 Optimal Selling Windows</h4>
+        <ol>
+            <li><strong>Industry Peak Hype:</strong> Maximum media attention</li>
+            <li><strong>IPO Seasons:</strong> Q1 and Q4 business activity</li>
+            <li><strong>Funding Announcements:</strong> When startups raise capital</li>
+            <li><strong>Regulatory Clarity:</strong> Legal certainty drives investment</li>
+            <li><strong>Technology Breakthroughs:</strong> Innovation catalysts</li>
+        </ol>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>💡 Market Analysis Pro Tip:</strong> The best opportunities often come during market fear when everyone else is selling. Contrarian investing works in domains just like stocks.
+        </div>
+        """,
+        
+        'Negotiation Tactics': """
+        <h2>🤝 Negotiation Tactics - Master the Art of Domain Deals</h2>
+        
+        <h3>Psychology of Domain Negotiations</h3>
+        <p>Domain negotiations are unique because you're selling a one-of-a-kind asset that the buyer cannot get elsewhere.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🧠 Negotiation Psychology Principles:</strong></p>
+            <ol>
+                <li><strong>Scarcity Leverage:</strong> Only one exists, ever</li>
+                <li><strong>Urgency Creation:</strong> Business needs it now</li>
+                <li><strong>Value Anchoring:</strong> Set high initial expectations</li>
+                <li><strong>Alternative Highlighting:</strong> Cost of not having it</li>
+                <li><strong>Relationship Building:</strong> Long-term partnership focus</li>
+            </ol>
+        </div>
+        
+        <h3>Pre-Negotiation Intelligence</h3>
+        
+        <h4>🔍 Research Your Buyer</h4>
+        <ul>
+            <li><strong>Company Financials:</strong> Recent funding, revenue estimates</li>
+            <li><strong>Business Model:</strong> How the domain fits their strategy</li>
+            <li><strong>Competition Analysis:</strong> What alternatives they have</li>
+            <li><strong>Timeline Pressure:</strong> Launch dates, investor meetings</li>
+            <li><strong>Decision Makers:</strong> Who has purchasing authority</li>
+        </ul>
+        
+        <h4>💼 Establish Your Position</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>📋 Preparation Checklist:</strong></p>
+            <ul>
+                <li><strong>Comparable Sales:</strong> Recent similar domain sales</li>
+                <li><strong>Market Value:</strong> Professional appraisals</li>
+                <li><strong>Cost Basis:</strong> Your investment + holding costs</li>
+                <li><strong>Alternative Options:</strong> Other domains you'd consider</li>
+                <li><strong>Walk-Away Price:</strong> Minimum acceptable offer</li>
+            </ul>
+        </div>
+        
+        <h3>Negotiation Tactics & Strategies</h3>
+        
+        <h4>🎯 Opening Move Strategies</h4>
+        <p><strong>The Anchor High Approach:</strong></p>
+        <ul>
+            <li><strong>Start 3-5x</strong> your target price</li>
+            <li><strong>Justify with comparables</strong> and business value</li>
+            <li><strong>Show flexibility</strong> for quick decisions</li>
+            <li><strong>Offer payment plans</strong> to reduce sticker shock</li>
+        </ul>
+        
+        <h4>🛡️ Defensive Tactics</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>When Buyers Push Back:</strong></p>
+            <ul>
+                <li><strong>"Too Expensive":</strong> Break down ROI calculations</li>
+                <li><strong>"Need Board Approval":</strong> Offer presentation materials</li>
+                <li><strong>"Looking at Alternatives":</strong> Highlight unique advantages</li>
+                <li><strong>"Budget Constraints":</strong> Suggest financing options</li>
+                <li><strong>"Need Time to Think":</strong> Create urgency with deadlines</li>
+            </ul>
+        </div>
+        
+        <h3>Advanced Negotiation Techniques</h3>
+        
+        <h4>🎪 The Takeaway Close</h4>
+        <p>"I've actually got another buyer interested at $X. If you're serious, I need to know by Friday."</p>
+        
+        <h4>📊 Value Stacking Method</h4>
+        <ol>
+            <li><strong>Domain Value:</strong> $X based on comparables</li>
+            <li><strong>SEO Benefit:</strong> $Y in search ranking value</li>
+            <li><strong>Brand Protection:</strong> $Z in competitive advantage</li>
+            <li><strong>Marketing Savings:</strong> $A in reduced advertising costs</li>
+            <li><strong>Total Package Value:</strong> $X+Y+Z+A</li>
+        </ol>
+        
+        <h4>🤝 Win-Win Structuring</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Creative Deal Structures:</strong></p>
+            <ul>
+                <li><strong>Revenue Share:</strong> Percentage of future business income</li>
+                <li><strong>Equity Stake:</strong> Small ownership in their company</li>
+                <li><strong>Performance Bonuses:</strong> Additional payments if milestones hit</li>
+                <li><strong>Licensing Deals:</strong> Retain ownership, license usage</li>
+                <li><strong>Portfolio Packages:</strong> Bundle multiple domains</li>
+            </ul>
+        </div>
+        
+        <h3>Closing & Finalizing Deals</h3>
+        
+        <h4>✅ Securing Agreement</h4>
+        <ul>
+            <li><strong>Get Written Confirmation:</strong> Email acceptance minimum</li>
+            <li><strong>Use Escrow Services:</strong> Escrow.com or Dan.com</li>
+            <li><strong>Set Clear Timeline:</strong> 5-7 business days standard</li>
+            <li><strong>Define Transfer Process:</strong> Auth codes and contacts</li>
+            <li><strong>Handle Legal Details:</strong> Contracts and warranties</li>
+        </ul>
+        
+        <h4>🚨 Red Flags to Avoid</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <ul>
+                <li><strong>No Escrow:</strong> Direct wire transfer requests</li>
+                <li><strong>Pressure Tactics:</strong> "Must decide today" from buyers</li>
+                <li><strong>Unusual Payment:</strong> Crypto or gift cards</li>
+                <li><strong>No Business Verification:</strong> Can't confirm company exists</li>
+                <li><strong>Legal Threats:</strong> Trademark claims without merit</li>
+            </ul>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>💡 Negotiation Master Secret:</strong> The person who cares less wins. Always have multiple deals in progress so you can walk away from any single negotiation.
+        </div>
+        """,
+        
         'Portfolio Building': """
         <h2>🏗️ Portfolio Building - Systematic Domain Accumulation</h2>
         
@@ -1865,6 +2113,1032 @@ def view_guide(guide_name):
         <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
             <strong>🎯 Portfolio Success Metric:</strong> Aim for 25% of your domains to generate 80% of your profits. Quality always beats quantity in domain investing.
         </div>
+        """,
+        
+        'Empire Building': """
+        <h2>👑 Empire Building - Scale to Domain Royalty</h2>
+        
+        <h3>The Empire Mindset</h3>
+        <p>Building a domain empire requires thinking like a digital real estate mogul. You're not just buying domains - you're acquiring digital territories that will generate wealth for decades.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🏰 Empire Foundation Pillars:</strong></p>
+            <ol>
+                <li><strong>Market Domination:</strong> Control entire keyword categories</li>
+                <li><strong>Strategic Partnerships:</strong> Alliances with industry leaders</li>
+                <li><strong>Automated Systems:</strong> Scale without personal bottlenecks</li>
+                <li><strong>Brand Development:</strong> Transform domains into household names</li>
+                <li><strong>Legacy Creation:</strong> Build generational wealth</li>
+            </ol>
+        </div>
+        
+        <h3>Territory Acquisition Strategy</h3>
+        
+        <h4>🎯 Keyword Kingdom Conquest</h4>
+        <p>Identify and dominate entire keyword families:</p>
+        <ul>
+            <li><strong>[Industry][City].com:</strong> DentalAustin.com, DentalDallas.com</li>
+            <li><strong>[Service][State].com:</strong> PlumbingTexas.com, PlumbingFlorida.com</li>
+            <li><strong>[Product]Category.com:</strong> OrganicFood.com, LuxuryWatches.com</li>
+            <li><strong>Branded Variations:</strong> GetInsurance.com, BuyInsurance.com</li>
+        </ul>
+        
+        <h4>🌍 Global Market Expansion</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>International Empire Strategy:</strong></p>
+            <ul>
+                <li><strong>ccTLD Portfolios:</strong> Same keywords across .co.uk, .de, .au</li>
+                <li><strong>Language Variations:</strong> Spanish, French, Portuguese markets</li>
+                <li><strong>Cultural Adaptations:</strong> Local business naming conventions</li>
+                <li><strong>Currency Considerations:</strong> Price in local currencies</li>
+                <li><strong>Legal Structures:</strong> International entity formation</li>
+            </ul>
+        </div>
+        
+        <h3>Empire Revenue Streams</h3>
+        
+        <h4>💰 Multiple Income Channels</h4>
+        <ol>
+            <li><strong>Direct Sales:</strong> Premium domain transactions ($50K+)</li>
+            <li><strong>Lease-to-Own:</strong> Monthly payments with option to buy</li>
+            <li><strong>Revenue Sharing:</strong> Percentage of business income</li>
+            <li><strong>Development Partnerships:</strong> Build and split ownership</li>
+            <li><strong>Brand Licensing:</strong> License usage rights</li>
+            <li><strong>Portfolio Management:</strong> Manage domains for others</li>
+        </ol>
+        
+        <h4>🔄 Automated Revenue Systems</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Set-and-Forget Income Streams:</strong></p>
+            <ul>
+                <li><strong>Landing Pages:</strong> Automated inquiry generation</li>
+                <li><strong>PPC Parking:</strong> Search engine revenue sharing</li>
+                <li><strong>Affiliate Marketing:</strong> Commission-based partnerships</li>
+                <li><strong>Subscription Models:</strong> Access to domain databases</li>
+                <li><strong>Educational Products:</strong> Courses and consulting</li>
+            </ul>
+        </div>
+        
+        <h3>Team Building & Delegation</h3>
+        
+        <h4>🎯 Essential Empire Roles</h4>
+        <ul>
+            <li><strong>Acquisition Specialist:</strong> Source and evaluate domains</li>
+            <li><strong>Sales Manager:</strong> Handle negotiations and closings</li>
+            <li><strong>Marketing Director:</strong> Build brand and generate leads</li>
+            <li><strong>Technical Manager:</strong> Handle transfers and development</li>
+            <li><strong>Financial Controller:</strong> Track ROI and manage cash flow</li>
+        </ul>
+        
+        <h3>Technology Infrastructure</h3>
+        
+        <h4>🖥️ Empire Management Systems</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Required Technology Stack:</strong></p>
+            <ul>
+                <li><strong>CRM System:</strong> Track all buyer interactions</li>
+                <li><strong>Portfolio Management:</strong> Real-time valuation tracking</li>
+                <li><strong>Automated Marketing:</strong> Email sequences and follow-ups</li>
+                <li><strong>Financial Dashboards:</strong> ROI and performance metrics</li>
+                <li><strong>Legal Management:</strong> Contract and trademark tracking</li>
+            </ul>
+        </div>
+        
+        <h3>Exit Strategy Planning</h3>
+        
+        <h4>🚪 Empire Exit Options</h4>
+        <ol>
+            <li><strong>Strategic Sale:</strong> Sell entire portfolio to corporation</li>
+            <li><strong>IPO Preparation:</strong> Build domain REIT structure</li>
+            <li><strong>Family Trust:</strong> Generational wealth transfer</li>
+            <li><strong>Franchise Model:</strong> License empire-building system</li>
+            <li><strong>Partial Liquidity:</strong> Sell segments while retaining core</li>
+        </ol>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>👑 Empire Builder Secret:</strong> The difference between investors and emperors is that emperors don't just buy domains - they create entire ecosystems that generate wealth automatically.
+        </div>
+        """,
+        
+        'Advanced Analytics': """
+        <h2>📊 Advanced Analytics - Data-Driven Domain Mastery</h2>
+        
+        <h3>Analytics Framework for Domains</h3>
+        <p>Transform your domain investing from intuition-based to data-driven decisions using advanced analytics and market intelligence.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>📈 Core Analytics Pillars:</strong></p>
+            <ol>
+                <li><strong>Market Intelligence:</strong> Track industry trends and cycles</li>
+                <li><strong>Valuation Models:</strong> Predictive pricing algorithms</li>
+                <li><strong>Risk Assessment:</strong> Portfolio optimization strategies</li>
+                <li><strong>Performance Tracking:</strong> ROI and growth metrics</li>
+                <li><strong>Competitive Analysis:</strong> Monitor market participants</li>
+            </ol>
+        </div>
+        
+        <h3>Advanced Valuation Models</h3>
+        
+        <h4>🔬 Algorithmic Pricing Methods</h4>
+        <p><strong>Multi-Factor Valuation Formula:</strong></p>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Domain Value = Base Score × Multipliers</strong></p>
+            <ul>
+                <li><strong>Base Score:</strong> Keyword value + TLD premium + Length factor</li>
+                <li><strong>Industry Multiplier:</strong> 0.5x (declining) to 3x (growing)</li>
+                <li><strong>Brandability Factor:</strong> 0.8x (generic) to 2x (memorable)</li>
+                <li><strong>SEO Potential:</strong> 0.9x (weak) to 1.5x (strong)</li>
+                <li><strong>Market Timing:</strong> 0.7x (peak) to 1.8x (emerging)</li>
+            </ul>
+        </div>
+        
+        <h4>📊 Comparable Sales Analysis</h4>
+        <ul>
+            <li><strong>Direct Comparables:</strong> Same keywords, different TLD</li>
+            <li><strong>Industry Benchmarks:</strong> Similar business categories</li>
+            <li><strong>Geographic Adjustments:</strong> Regional market differences</li>
+            <li><strong>Time-Series Analysis:</strong> Historical appreciation rates</li>
+            <li><strong>Volume-Weighted Averages:</strong> Account for transaction size</li>
+        </ul>
+        
+        <h3>Market Intelligence Systems</h3>
+        
+        <h4>🎯 Trend Detection Algorithms</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Early Warning Indicators:</strong></p>
+            <ul>
+                <li><strong>Search Volume Spikes:</strong> 500%+ increase over 30 days</li>
+                <li><strong>Media Mention Surge:</strong> 10x baseline coverage</li>
+                <li><strong>Domain Registration Burst:</strong> New TLD registrations</li>
+                <li><strong>Investment Flow Changes:</strong> VC funding patterns</li>
+                <li><strong>Patent Filing Activity:</strong> Innovation indicators</li>
+            </ul>
+        </div>
+        
+        <h4>🔍 Competitive Intelligence</h4>
+        <ul>
+            <li><strong>Portfolio Tracking:</strong> Monitor top investor acquisitions</li>
+            <li><strong>Auction Analysis:</strong> Bidding pattern recognition</li>
+            <li><strong>Price Sensitivity:</strong> Market maker behavior</li>
+            <li><strong>Exit Timing:</strong> When big players sell</li>
+            <li><strong>Strategy Patterns:</strong> Successful investor methodologies</li>
+        </ul>
+        
+        <h3>Risk Analytics & Portfolio Optimization</h3>
+        
+        <h4>⚖️ Risk Scoring Matrix</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Risk Factors (1-10 scale):</strong></p>
+            <ul>
+                <li><strong>Market Concentration:</strong> Industry diversity score</li>
+                <li><strong>Price Volatility:</strong> Historical price swings</li>
+                <li><strong>Liquidity Risk:</strong> Average time to sell</li>
+                <li><strong>Regulatory Risk:</strong> Legal environment changes</li>
+                <li><strong>Technology Risk:</strong> Platform dependency</li>
+                <li><strong>Economic Sensitivity:</strong> Recession correlation</li>
+            </ul>
+        </div>
+        
+        <h4>📈 Portfolio Optimization Strategies</h4>
+        <ul>
+            <li><strong>Modern Portfolio Theory:</strong> Risk/return optimization</li>
+            <li><strong>Monte Carlo Simulation:</strong> Scenario planning</li>
+            <li><strong>Correlation Analysis:</strong> Diversification effectiveness</li>
+            <li><strong>Value at Risk (VaR):</strong> Downside protection</li>
+            <li><strong>Sharpe Ratio Maximization:</strong> Risk-adjusted returns</li>
+        </ul>
+        
+        <h3>Performance Tracking & KPIs</h3>
+        
+        <h4>📊 Essential Metrics Dashboard</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Track These KPIs Weekly:</strong></p>
+            <ul>
+                <li><strong>Portfolio IRR:</strong> Internal rate of return</li>
+                <li><strong>Cash-on-Cash Return:</strong> Annual cash flow yield</li>
+                <li><strong>Portfolio Velocity:</strong> Turnover rate</li>
+                <li><strong>Hit Rate:</strong> Profitable sales percentage</li>
+                <li><strong>Average Holding Period:</strong> Time to liquidity</li>
+                <li><strong>Cost Per Acquisition:</strong> Research and buying costs</li>
+            </ul>
+        </div>
+        
+        <h3>Predictive Analytics Models</h3>
+        
+        <h4>🔮 Forecasting Techniques</h4>
+        <ul>
+            <li><strong>Regression Analysis:</strong> Multi-variable price prediction</li>
+            <li><strong>Machine Learning:</strong> Pattern recognition algorithms</li>
+            <li><strong>Sentiment Analysis:</strong> Social media and news impact</li>
+            <li><strong>Seasonal Models:</strong> Cyclical trend identification</li>
+            <li><strong>Economic Indicators:</strong> Macro factor integration</li>
+        </ul>
+        
+        <h4>🎯 Acquisition Targeting System</h4>
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px;">
+            <p><strong>AI-Powered Deal Sourcing:</strong></p>
+            <ul>
+                <li><strong>Expiry Monitoring:</strong> Domains about to drop</li>
+                <li><strong>Distressed Asset Detection:</strong> Financial stress signals</li>
+                <li><strong>Undervaluation Alerts:</strong> Mispriced opportunities</li>
+                <li><strong>Trend Momentum:</strong> Emerging category identification</li>
+                <li><strong>Arbitrage Detection:</strong> Cross-platform price gaps</li>
+            </ul>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>📊 Analytics Mastery Secret:</strong> The most successful domain investors make decisions based on data, not emotions. Build your analytics stack first, then trust the numbers.
+        </div>
+        """,
+        
+        'Premium Tools': """
+        <h2>🛠️ Premium Tools - Professional Domain Arsenal</h2>
+        
+        <h3>Professional Tool Stack</h3>
+        <p>Elite domain investors use professional-grade tools to gain competitive advantages in research, acquisition, and management.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Essential Tool Categories:</strong></p>
+            <ol>
+                <li><strong>Research & Analytics:</strong> Market intelligence platforms</li>
+                <li><strong>Valuation Tools:</strong> Automated appraisal systems</li>
+                <li><strong>Portfolio Management:</strong> Asset tracking and optimization</li>
+                <li><strong>Sales & Marketing:</strong> Lead generation and outreach</li>
+                <li><strong>Legal & Compliance:</strong> Trademark and IP protection</li>
+            </ol>
+        </div>
+        
+        <h3>Research & Intelligence Tools</h3>
+        
+        <h4>📊 Market Research Platforms</h4>
+        <ul>
+            <li><strong>NameBio ($99/month):</strong> Comprehensive sales database</li>
+            <li><strong>DomainTools ($99/month):</strong> WHOIS and DNS intelligence</li>
+            <li><strong>EstiBot ($19/month):</strong> Automated domain appraisals</li>
+            <li><strong>Ahrefs ($99/month):</strong> SEO and keyword research</li>
+            <li><strong>SEMrush ($119/month):</strong> Competitive intelligence</li>
+        </ul>
+        
+        <h4>🔍 Advanced Analytics Suites</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Professional Analytics Stack:</strong></p>
+            <ul>
+                <li><strong>GoDaddy Investor Tools ($4.99/month):</strong> Auction insights</li>
+                <li><strong>Domain Hunter Gatherer ($97):</strong> Expired domain research</li>
+                <li><strong>Fresh Drop ($29/month):</strong> Daily expired domain lists</li>
+                <li><strong>Domain Punch ($19/month):</strong> Brandable domain generator</li>
+                <li><strong>Lean Domain Search (Free):</strong> Available domain suggestions</li>
+            </ul>
+        </div>
+        
+        <h3>Portfolio Management Systems</h3>
+        
+        <h4>💼 Professional Management Platforms</h4>
+        <ul>
+            <li><strong>Efty ($20/month):</strong> Landing pages and CRM</li>
+            <li><strong>Dan.com ($0-50/month):</strong> Marketplace and management</li>
+            <li><strong>Uniregistry Market ($Free):</strong> Professional listings</li>
+            <li><strong>Sedo Premium ($99/month):</strong> Broker network access</li>
+            <li><strong>4.cn (Custom pricing):</strong> Enterprise management</li>
+        </ul>
+        
+        <h4>📈 Performance Tracking Tools</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>ROI and Analytics Tracking:</strong></p>
+            <ul>
+                <li><strong>Custom Spreadsheets:</strong> Google Sheets with formulas</li>
+                <li><strong>DomainIQ ($99/month):</strong> Portfolio analytics</li>
+                <li><strong>Domain Capital ($49/month):</strong> Investment tracking</li>
+                <li><strong>PortfolioTracker ($29/month):</strong> Performance monitoring</li>
+                <li><strong>DomainTools Portfolio ($199/month):</strong> Enterprise analytics</li>
+            </ul>
+        </div>
+        
+        <h3>Sales & Marketing Automation</h3>
+        
+        <h4>🎯 Lead Generation Systems</h4>
+        <ul>
+            <li><strong>HubSpot CRM ($0-450/month):</strong> Contact management</li>
+            <li><strong>Pipedrive ($12.50/month):</strong> Sales pipeline tracking</li>
+            <li><strong>ZoomInfo ($14,995/year):</strong> B2B contact database</li>
+            <li><strong>Apollo.io ($49/month):</strong> Prospect research</li>
+            <li><strong>Hunter.io ($49/month):</strong> Email finder and verifier</li>
+        </ul>
+        
+        <h4>📧 Email Marketing & Outreach</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Outreach Automation Stack:</strong></p>
+            <ul>
+                <li><strong>Mailchimp ($10/month):</strong> Email marketing campaigns</li>
+                <li><strong>Woodpecker ($40/month):</strong> Cold email sequences</li>
+                <li><strong>Reply.io ($90/month):</strong> Multi-channel outreach</li>
+                <li><strong>Lemlist ($59/month):</strong> Personalized email campaigns</li>
+                <li><strong>Instantly ($37/month):</strong> Email warming and delivery</li>
+            </ul>
+        </div>
+        
+        <h3>Legal & Compliance Tools</h3>
+        
+        <h4>⚖️ Trademark & IP Protection</h4>
+        <ul>
+            <li><strong>USPTO Database (Free):</strong> Trademark searches</li>
+            <li><strong>TrademarkNow ($49/month):</strong> Global trademark monitoring</li>
+            <li><strong>MarkMonitor ($Custom):</strong> Enterprise brand protection</li>
+            <li><strong>Corsearch ($Custom):</strong> IP intelligence platform</li>
+            <li><strong>LegalZoom ($79-$329):</strong> Legal document preparation</li>
+        </ul>
+        
+        <h4>📝 Contract & Transaction Management</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Legal Process Automation:</strong></p>
+            <ul>
+                <li><strong>Escrow.com ($Custom):</strong> Secure transaction processing</li>
+                <li><strong>DocuSign ($10/month):</strong> Electronic signatures</li>
+                <li><strong>PandaDoc ($19/month):</strong> Contract automation</li>
+                <li><strong>Clio ($39/month):</strong> Legal practice management</li>
+                <li><strong>LawGeex ($Custom):</strong> AI contract review</li>
+            </ul>
+        </div>
+        
+        <h3>Advanced Development Tools</h3>
+        
+        <h4>🌐 Website & Landing Page Builders</h4>
+        <ul>
+            <li><strong>WordPress ($0-25/month):</strong> Full website development</li>
+            <li><strong>Unbounce ($80/month):</strong> Landing page optimization</li>
+            <li><strong>Leadpages ($37/month):</strong> Conversion-focused pages</li>
+            <li><strong>Instapage ($199/month):</strong> Enterprise landing pages</li>
+            <li><strong>Webflow ($12/month):</strong> Visual web development</li>
+        </ul>
+        
+        <h3>Tool Selection Strategy</h3>
+        
+        <h4>🎯 ROI-Based Tool Selection</h4>
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px;">
+            <p><strong>Investment Priority Framework:</strong></p>
+            <ol>
+                <li><strong>Research Tools First:</strong> Better deals = higher ROI</li>
+                <li><strong>Management Tools Second:</strong> Scale efficiency</li>
+                <li><strong>Marketing Tools Third:</strong> Increase sales velocity</li>
+                <li><strong>Advanced Tools Last:</strong> Optimize existing processes</li>
+            </ol>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🛠️ Tool Mastery Secret:</strong> Don't buy tools for the sake of having them. Each tool should either help you find better deals, manage more efficiently, or sell faster. ROI should exceed tool cost within 90 days.
+        </div>
+        """,
+        
+        'Elite Strategies': """
+        <h2>💎 Elite Strategies - Insider Techniques</h2>
+        
+        <h3>Elite-Level Domain Strategies</h3>
+        <p>These advanced techniques separate professional domain investors from hobbyists.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Elite Strategy Categories:</strong></p>
+            <ol>
+                <li><strong>Market Making:</strong> Create liquidity and influence pricing</li>
+                <li><strong>Strategic Partnerships:</strong> Corporate alliance development</li>
+                <li><strong>Vertical Integration:</strong> Control entire value chains</li>
+                <li><strong>Arbitrage Operations:</strong> Cross-platform profit extraction</li>
+                <li><strong>Information Asymmetry:</strong> Proprietary intelligence advantages</li>
+            </ol>
+        </div>
+        
+        <h3>Market Making Strategies</h3>
+        
+        <h4>🏦 Become the Central Hub</h4>
+        <ul>
+            <li><strong>Liquidity Provision:</strong> Always have inventory ready to sell</li>
+            <li><strong>Price Discovery:</strong> Set market rates for domain categories</li>
+            <li><strong>Two-Sided Markets:</strong> Connect buyers and sellers</li>
+            <li><strong>Inventory Management:</strong> Strategic stock rotation</li>
+            <li><strong>Market Intelligence:</strong> Information broker role</li>
+        </ul>
+        
+        <h4>💰 Spread Capture Techniques</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Elite Arbitrage Methods:</strong></p>
+            <ul>
+                <li><strong>Geographic Arbitrage:</strong> Buy in one country, sell in another</li>
+                <li><strong>Temporal Arbitrage:</strong> Seasonal buying and selling</li>
+                <li><strong>Information Arbitrage:</strong> Act on non-public information</li>
+                <li><strong>Auction Arbitrage:</strong> Cross-platform price differences</li>
+                <li><strong>Development Arbitrage:</strong> Add value through development</li>
+            </ul>
+        </div>
+        
+        <h3>Strategic Partnership Development</h3>
+        
+        <h4>🤝 Corporate Alliance Building</h4>
+        <ul>
+            <li><strong>Fortune 500 Relationships:</strong> Direct procurement partnerships</li>
+            <li><strong>VC Fund Connections:</strong> Portfolio company domain needs</li>
+            <li><strong>Industry Association Memberships:</strong> Network access</li>
+            <li><strong>Legal Firm Partnerships:</strong> Client referral systems</li>
+            <li><strong>Broker Network Development:</strong> Exclusive deal flow</li>
+        </ul>
+        
+        <h4>📈 Revenue Sharing Models</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Advanced Partnership Structures:</strong></p>
+            <ul>
+                <li><strong>Joint Ventures:</strong> Shared ownership and profits</li>
+                <li><strong>Success Fees:</strong> Performance-based compensation</li>
+                <li><strong>Equity Partnerships:</strong> Stake in portfolio companies</li>
+                <li><strong>Management Agreements:</strong> Fee-based portfolio management</li>
+                <li><strong>Licensing Deals:</strong> Technology and process licensing</li>
+            </ul>
+        </div>
+        
+        <h3>Vertical Integration Strategies</h3>
+        
+        <h4>🏗️ Control the Entire Value Chain</h4>
+        <ul>
+            <li><strong>Registrar Operations:</strong> Own the registration process</li>
+            <li><strong>Marketplace Development:</strong> Platform ownership</li>
+            <li><strong>Escrow Services:</strong> Transaction facilitation</li>
+            <li><strong>Development Teams:</strong> In-house website creation</li>
+            <li><strong>Legal Services:</strong> Specialized domain law practice</li>
+        </ul>
+        
+        <h3>Information Asymmetry Advantages</h3>
+        
+        <h4>🕵️ Proprietary Intelligence Networks</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Elite Information Sources:</strong></p>
+            <ul>
+                <li><strong>Industry Insiders:</strong> C-level executive networks</li>
+                <li><strong>Legal Intelligence:</strong> Trademark filing monitoring</li>
+                <li><strong>Financial Intelligence:</strong> Funding round tracking</li>
+                <li><strong>Technical Intelligence:</strong> DNS and traffic analysis</li>
+                <li><strong>Media Intelligence:</strong> Pre-publication story access</li>
+            </ul>
+        </div>
+        
+        <h3>Advanced Monetization Models</h3>
+        
+        <h4>💎 Premium Revenue Strategies</h4>
+        <ul>
+            <li><strong>Domain Funds:</strong> Pooled investment vehicles</li>
+            <li><strong>REITs:</strong> Real Estate Investment Trust structure</li>
+            <li><strong>Securitization:</strong> Domain-backed securities</li>
+            <li><strong>Derivatives:</strong> Domain futures and options</li>
+            <li><strong>Tokenization:</strong> Blockchain-based ownership</li>
+        </ul>
+        
+        <h4>🎯 Elite Exit Strategies</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Maximum Value Extraction:</strong></p>
+            <ul>
+                <li><strong>Strategic Acquisitions:</strong> Sell to competitors</li>
+                <li><strong>Financial Buyers:</strong> Private equity and hedge funds</li>
+                <li><strong>Management Buyouts:</strong> Team acquisition of portfolio</li>
+                <li><strong>Public Offerings:</strong> IPO of domain company</li>
+                <li><strong>Legacy Structures:</strong> Generational wealth transfer</li>
+            </ul>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>💎 Elite Strategy Secret:</strong> The highest-level domain investors don't just buy and sell domains - they create entire ecosystems and markets around domain investing.
+        </div>
+        """,
+        
+        'Insider Secrets': """
+        <h2>🔐 Insider Secrets - Confidential Techniques</h2>
+        
+        <h3>Industry Insider Knowledge</h3>
+        <p>These closely-guarded secrets are known only to the most successful domain investors and industry insiders.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🤫 Insider Secret Categories:</strong></p>
+            <ol>
+                <li><strong>Hidden Market Signals:</strong> Non-obvious trend indicators</li>
+                <li><strong>Insider Trading Techniques:</strong> Legal information advantages</li>
+                <li><strong>Network Effects:</strong> Relationship-based opportunities</li>
+                <li><strong>Psychological Triggers:</strong> Buyer behavior manipulation</li>
+                <li><strong>Regulatory Arbitrage:</strong> Legal framework advantages</li>
+            </ol>
+        </div>
+        
+        <h3>Hidden Market Signals</h3>
+        
+        <h4>🎯 Non-Obvious Trend Indicators</h4>
+        <ul>
+            <li><strong>Patent Applications:</strong> Technology trends 18 months early</li>
+            <li><strong>Domain Registrations:</strong> Corporate expansion plans</li>
+            <li><strong>SSL Certificate Monitoring:</strong> Website development activity</li>
+            <li><strong>Job Posting Analysis:</strong> Industry growth signals</li>
+            <li><strong>Conference Speaker Lists:</strong> Emerging expert networks</li>
+        </ul>
+        
+        <h4>📊 Proprietary Data Sources</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Exclusive Intelligence Channels:</strong></p>
+            <ul>
+                <li><strong>WHOIS History:</strong> Ownership change patterns</li>
+                <li><strong>Traffic Analytics:</strong> Domain performance metrics</li>
+                <li><strong>Email Patterns:</strong> Corporate communication analysis</li>
+                <li><strong>Social Media Monitoring:</strong> Sentiment and trend tracking</li>
+                <li><strong>Financial Filings:</strong> Corporate asset disclosures</li>
+            </ul>
+        </div>
+        
+        <h3>Psychology-Based Techniques</h3>
+        
+        <h4>🧠 Buyer Behavior Manipulation</h4>
+        <ul>
+            <li><strong>Scarcity Creation:</strong> Artificial urgency generation</li>
+            <li><strong>Social Proof:</strong> Leverage other high-profile sales</li>
+            <li><strong>Authority Positioning:</strong> Expert status establishment</li>
+            <li><strong>Loss Aversion:</strong> Emphasize opportunity cost</li>
+            <li><strong>Anchoring Effects:</strong> Strategic price positioning</li>
+        </ul>
+        
+        <h4>💰 Advanced Negotiation Psychology</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Mind Game Techniques:</strong></p>
+            <ul>
+                <li><strong>The Flinch:</strong> React to offers with shock</li>
+                <li><strong>Bracketing:</strong> Extreme anchoring strategies</li>
+                <li><strong>The Nibble:</strong> Small additional requests</li>
+                <li><strong>Silence Power:</strong> Let them fill the void</li>
+                <li><strong>False Time Constraints:</strong> Artificial deadlines</li>
+            </ul>
+        </div>
+        
+        <h3>Network-Based Advantages</h3>
+        
+        <h4>🤝 Insider Network Development</h4>
+        <ul>
+            <li><strong>C-Suite Connections:</strong> Direct access to decision makers</li>
+            <li><strong>VC Partner Relationships:</strong> Portfolio company deals</li>
+            <li><strong>Legal Network:</strong> Attorney referral systems</li>
+            <li><strong>Media Relationships:</strong> Journalist and blogger contacts</li>
+            <li><strong>Government Connections:</strong> Policy and regulation insights</li>
+        </ul>
+        
+        <h4>📈 Information Flow Control</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Strategic Information Management:</strong></p>
+            <ul>
+                <li><strong>Selective Disclosure:</strong> Control information release</li>
+                <li><strong>Misinformation Campaigns:</strong> Competitive misdirection</li>
+                <li><strong>Insider Trading Networks:</strong> Legal information sharing</li>
+                <li><strong>Market Manipulation:</strong> Influence price movements</li>
+                <li><strong>Reputation Management:</strong> Control public perception</li>
+            </ul>
+        </div>
+        
+        <h3>Regulatory Arbitrage</h3>
+        
+        <h4>⚖️ Legal Framework Advantages</h4>
+        <ul>
+            <li><strong>Jurisdiction Shopping:</strong> Optimal legal environments</li>
+            <li><strong>Tax Optimization:</strong> Minimize transaction taxes</li>
+            <li><strong>Regulatory Gaps:</strong> Exploit unclear regulations</li>
+            <li><strong>Compliance Arbitrage:</strong> Different rule interpretations</li>
+            <li><strong>Policy Influence:</strong> Shape future regulations</li>
+        </ul>
+        
+        <h3>Advanced Monetization Secrets</h3>
+        
+        <h4>💎 Hidden Revenue Streams</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Confidential Income Sources:</strong></p>
+            <ul>
+                <li><strong>Broker Kickbacks:</strong> Hidden commission structures</li>
+                <li><strong>Auction House Relationships:</strong> Preferential treatment</li>
+                <li><strong>Registry Partnerships:</strong> Exclusive TLD access</li>
+                <li><strong>Corporate Retainers:</strong> Ongoing consultation fees</li>
+                <li><strong>Government Contracts:</strong> Official domain services</li>
+            </ul>
+        </div>
+        
+        <h4>🎯 Black Market Techniques</h4>
+        <p><em>Note: These techniques exist but may operate in legal gray areas:</em></p>
+        <ul>
+            <li><strong>Dark Web Markets:</strong> Underground domain trading</li>
+            <li><strong>Stolen Domain Recovery:</strong> Legal gray area profits</li>
+            <li><strong>Trademark Squatting:</strong> Strategic defensive registrations</li>
+            <li><strong>Typosquatting Networks:</strong> Traffic monetization</li>
+            <li><strong>Drop Catching Syndicates:</strong> Coordinated acquisition</li>
+        </ul>
+        
+        <h3>Risk Management Secrets</h3>
+        
+        <h4>🛡️ Advanced Protection Strategies</h4>
+        <ul>
+            <li><strong>Anonymous Ownership:</strong> Privacy protection services</li>
+            <li><strong>Offshore Structures:</strong> Asset protection entities</li>
+            <li><strong>Insurance Strategies:</strong> Specialized domain coverage</li>
+            <li><strong>Legal Firewalls:</strong> Liability isolation techniques</li>
+            <li><strong>Exit Triggers:</strong> Automated liquidation systems</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🔐 Ultimate Insider Secret:</strong> The most successful domain investors don't compete in the same market as everyone else - they create their own markets and set the rules. Information is the ultimate competitive advantage.
+        </div>
+        """,
+        
+        'Master Class': """
+        <h2>🎓 Master Class - Advanced Domain Mastery</h2>
+        
+        <h3>Master-Level Domain Education</h3>
+        <p>This comprehensive master class covers advanced concepts that transform good domain investors into industry legends.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Master Class Curriculum:</strong></p>
+            <ol>
+                <li><strong>Strategic Vision:</strong> Long-term industry positioning</li>
+                <li><strong>Market Psychology:</strong> Understanding human behavior</li>
+                <li><strong>Financial Engineering:</strong> Advanced transaction structures</li>
+                <li><strong>Technology Integration:</strong> Leveraging tech advantages</li>
+                <li><strong>Legacy Building:</strong> Creating lasting impact</li>
+            </ol>
+        </div>
+        
+        <h3>Strategic Vision Development</h3>
+        
+        <h4>🔮 Long-Term Industry Positioning</h4>
+        <ul>
+            <li><strong>Trend Forecasting:</strong> Predict industry evolution 5-10 years out</li>
+            <li><strong>Technology Impact:</strong> How blockchain, AI, VR will affect domains</li>
+            <li><strong>Generational Shifts:</strong> Changing user behavior patterns</li>
+            <li><strong>Global Market Evolution:</strong> Emerging market opportunities</li>
+            <li><strong>Regulatory Landscape:</strong> Future legal environment</li>
+        </ul>
+        
+        <h4>🎯 Strategic Positioning Framework</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Master-Level Positioning Strategy:</strong></p>
+            <ul>
+                <li><strong>Thought Leadership:</strong> Become the recognized expert</li>
+                <li><strong>Market Making:</strong> Influence industry standards</li>
+                <li><strong>Ecosystem Control:</strong> Own critical infrastructure</li>
+                <li><strong>Information Monopoly:</strong> Exclusive data access</li>
+                <li><strong>Relationship Dominance:</strong> Control key connections</li>
+            </ul>
+        </div>
+        
+        <h3>Market Psychology Mastery</h3>
+        
+        <h4>🧠 Human Behavior Analysis</h4>
+        <ul>
+            <li><strong>Cognitive Biases:</strong> Exploit psychological shortcuts</li>
+            <li><strong>Emotional Triggers:</strong> Fear, greed, pride, urgency</li>
+            <li><strong>Social Dynamics:</strong> Group psychology and trends</li>
+            <li><strong>Cultural Psychology:</strong> Geographic behavior differences</li>
+            <li><strong>Generational Psychology:</strong> Age-based preferences</li>
+        </ul>
+        
+        <h4>💰 Behavioral Economics Application</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Advanced Psychology Techniques:</strong></p>
+            <ul>
+                <li><strong>Prospect Theory:</strong> Loss aversion and risk perception</li>
+                <li><strong>Mental Accounting:</strong> How people categorize money</li>
+                <li><strong>Social Proof:</strong> Influence through peer behavior</li>
+                <li><strong>Authority Bias:</strong> Leverage expert status</li>
+                <li><strong>Commitment Consistency:</strong> Public commitment power</li>
+            </ul>
+        </div>
+        
+        <h3>Financial Engineering</h3>
+        
+        <h4>🏦 Advanced Transaction Structures</h4>
+        <ul>
+            <li><strong>Synthetic Instruments:</strong> Domain derivatives and futures</li>
+            <li><strong>Structured Products:</strong> Complex investment vehicles</li>
+            <li><strong>Tax Optimization:</strong> International tax planning</li>
+            <li><strong>Risk Management:</strong> Hedging and insurance strategies</li>
+            <li><strong>Capital Structure:</strong> Debt and equity optimization</li>
+        </ul>
+        
+        <h4>💎 Investment Vehicle Creation</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Master-Level Investment Structures:</strong></p>
+            <ul>
+                <li><strong>Domain Funds:</strong> Private investment partnerships</li>
+                <li><strong>REIT Structures:</strong> Public investment vehicles</li>
+                <li><strong>Hedge Fund Models:</strong> Alternative investment strategies</li>
+                <li><strong>Family Offices:</strong> Ultra-high-net-worth management</li>
+                <li><strong>Institutional Products:</strong> Pension and endowment access</li>
+            </ul>
+        </div>
+        
+        <h3>Technology Integration</h3>
+        
+        <h4>🤖 Artificial Intelligence Applications</h4>
+        <ul>
+            <li><strong>Predictive Analytics:</strong> AI-powered domain valuation</li>
+            <li><strong>Natural Language Processing:</strong> Trend detection in text</li>
+            <li><strong>Machine Learning:</strong> Pattern recognition in sales data</li>
+            <li><strong>Computer Vision:</strong> Logo and brand analysis</li>
+            <li><strong>Neural Networks:</strong> Complex relationship modeling</li>
+        </ul>
+        
+        <h4>⛓️ Blockchain and Web3 Integration</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Next-Generation Domain Technology:</strong></p>
+            <ul>
+                <li><strong>ENS Domains:</strong> Ethereum Name Service strategy</li>
+                <li><strong>NFT Integration:</strong> Non-fungible token domains</li>
+                <li><strong>DeFi Applications:</strong> Decentralized finance integration</li>
+                <li><strong>Smart Contracts:</strong> Automated domain transactions</li>
+                <li><strong>Metaverse Domains:</strong> Virtual world real estate</li>
+            </ul>
+        </div>
+        
+        <h3>Legacy Building</h3>
+        
+        <h4>🏛️ Industry Impact Creation</h4>
+        <ul>
+            <li><strong>Standard Setting:</strong> Influence industry practices</li>
+            <li><strong>Educational Programs:</strong> Train next generation</li>
+            <li><strong>Research Funding:</strong> Advance domain science</li>
+            <li><strong>Policy Influence:</strong> Shape regulatory environment</li>
+            <li><strong>Philanthropic Impact:</strong> Use wealth for social good</li>
+        </ul>
+        
+        <h4>🎯 Succession Planning</h4>
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px;">
+            <p><strong>Generational Wealth Transfer:</strong></p>
+            <ul>
+                <li><strong>Trust Structures:</strong> Multi-generational planning</li>
+                <li><strong>Education Programs:</strong> Family member training</li>
+                <li><strong>Management Systems:</strong> Professional oversight</li>
+                <li><strong>Governance Structures:</strong> Decision-making frameworks</li>
+                <li><strong>Values Integration:</strong> Purpose-driven investing</li>
+            </ul>
+        </div>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🎓 Master Class Graduation:</strong> You've completed the most advanced domain education available. Now use this knowledge to build your domain empire and create lasting impact in the industry.
+        </div>
+        """,
+        
+        'Personal Coaching': """
+        <h2>👥 Personal Coaching - One-on-One Mastery</h2>
+        
+        <h3>Elite Personal Coaching Program</h3>
+        <p>Exclusive one-on-one coaching reserved for Empire package members. Work directly with domain experts to accelerate your success.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Personal Coaching Benefits:</strong></p>
+            <ol>
+                <li><strong>Customized Strategy:</strong> Tailored to your specific situation</li>
+                <li><strong>Direct Access:</strong> Expert guidance when you need it</li>
+                <li><strong>Accountability:</strong> Regular progress reviews</li>
+                <li><strong>Network Access:</strong> Introductions to key industry players</li>
+                <li><strong>Deal Review:</strong> Expert analysis of opportunities</li>
+            </ol>
+        </div>
+        
+        <h3>Coaching Program Structure</h3>
+        
+        <h4>📞 Weekly Strategy Sessions</h4>
+        <ul>
+            <li><strong>60-Minute Calls:</strong> Deep dive strategic planning</li>
+            <li><strong>Deal Analysis:</strong> Review potential acquisitions</li>
+            <li><strong>Market Updates:</strong> Latest industry intelligence</li>
+            <li><strong>Portfolio Review:</strong> Optimize your holdings</li>
+            <li><strong>Goal Setting:</strong> Quarterly milestone planning</li>
+        </ul>
+        
+        <h4>💼 Personalized Action Plans</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Custom Coaching Modules:</strong></p>
+            <ul>
+                <li><strong>Beginner Track:</strong> Foundation building and first deals</li>
+                <li><strong>Growth Track:</strong> Scaling existing portfolio</li>
+                <li><strong>Expert Track:</strong> Advanced strategies and market making</li>
+                <li><strong>Empire Track:</strong> Building institutional-grade operations</li>
+                <li><strong>Exit Track:</strong> Liquidity events and succession planning</li>
+            </ul>
+        </div>
+        
+        <h3>Coaching Methodologies</h3>
+        
+        <h4>🎯 Results-Driven Approach</h4>
+        <ul>
+            <li><strong>SMART Goals:</strong> Specific, measurable, achievable targets</li>
+            <li><strong>Weekly Accountability:</strong> Progress tracking and adjustment</li>
+            <li><strong>Performance Metrics:</strong> ROI and growth measurement</li>
+            <li><strong>Success Milestones:</strong> Celebrate achievements</li>
+            <li><strong>Course Correction:</strong> Adapt strategies based on results</li>
+        </ul>
+        
+        <h4>🧠 Mindset Development</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Mental Performance Coaching:</strong></p>
+            <ul>
+                <li><strong>Confidence Building:</strong> Overcome limiting beliefs</li>
+                <li><strong>Risk Management:</strong> Emotional control in decisions</li>
+                <li><strong>Patience Training:</strong> Long-term thinking development</li>
+                <li><strong>Negotiation Skills:</strong> Psychological advantage building</li>
+                <li><strong>Leadership Development:</strong> Team building and delegation</li>
+            </ul>
+        </div>
+        
+        <h3>Exclusive Coaching Resources</h3>
+        
+        <h4>📚 Private Knowledge Base</h4>
+        <ul>
+            <li><strong>Case Studies:</strong> Real deal analysis and outcomes</li>
+            <li><strong>Template Library:</strong> Contracts, emails, presentations</li>
+            <li><strong>Tool Recommendations:</strong> Personalized software stack</li>
+            <li><strong>Contact Database:</strong> Verified industry connections</li>
+            <li><strong>Market Intelligence:</strong> Exclusive research reports</li>
+        </ul>
+        
+        <h4>🤝 Network Access</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Elite Network Introductions:</strong></p>
+            <ul>
+                <li><strong>Domain Brokers:</strong> Top-tier sales professionals</li>
+                <li><strong>Legal Experts:</strong> Specialized domain attorneys</li>
+                <li><strong>Financial Advisors:</strong> Wealth management specialists</li>
+                <li><strong>Technology Partners:</strong> Development and automation teams</li>
+                <li><strong>Investor Network:</strong> High-net-worth domain investors</li>
+            </ul>
+        </div>
+        
+        <h3>Coaching Specializations</h3>
+        
+        <h4>💰 Financial Optimization</h4>
+        <ul>
+            <li><strong>Portfolio Analysis:</strong> Maximize ROI across holdings</li>
+            <li><strong>Tax Strategy:</strong> Minimize tax burden legally</li>
+            <li><strong>Financing Options:</strong> Leverage and capital strategies</li>
+            <li><strong>Exit Planning:</strong> Liquidity event preparation</li>
+            <li><strong>Wealth Preservation:</strong> Asset protection strategies</li>
+        </ul>
+        
+        <h4>🎯 Market Positioning</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Competitive Advantage Development:</strong></p>
+            <ul>
+                <li><strong>Niche Domination:</strong> Become the category leader</li>
+                <li><strong>Brand Building:</strong> Personal and business branding</li>
+                <li><strong>Thought Leadership:</strong> Industry recognition strategies</li>
+                <li><strong>Media Relations:</strong> Public relations and publicity</li>
+                <li><strong>Speaking Opportunities:</strong> Conference and event placement</li>
+            </ul>
+        </div>
+        
+        <h3>Success Guarantee</h3>
+        
+        <h4>📈 Performance Commitment</h4>
+        <p><strong>90-Day Success Guarantee:</strong></p>
+        <ul>
+            <li><strong>Minimum ROI:</strong> 25% improvement in portfolio performance</li>
+            <li><strong>Deal Flow:</strong> Access to 3+ qualified opportunities monthly</li>
+            <li><strong>Network Growth:</strong> 10+ new industry connections</li>
+            <li><strong>Knowledge Transfer:</strong> Measurable skill improvement</li>
+            <li><strong>Satisfaction Guarantee:</strong> Full refund if not satisfied</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>👥 Coaching Philosophy:</strong> Success in domain investing is 80% strategy and 20% execution. Our job is to give you the perfect strategy and guide your execution until success becomes inevitable.
+        </div>
+        """,
+        
+        'Exclusive Networks': """
+        <h2>🌐 Exclusive Networks - Elite Connections</h2>
+        
+        <h3>Private Network Access</h3>
+        <p>Join the most exclusive domain investing networks where deals worth millions are discussed and partnerships are formed.</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            <p><strong>🎯 Network Access Levels:</strong></p>
+            <ol>
+                <li><strong>Industry Insiders:</strong> C-level executives and entrepreneurs</li>
+                <li><strong>Investment Community:</strong> VCs, hedge funds, family offices</li>
+                <li><strong>Legal Network:</strong> Top domain attorneys and IP experts</li>
+                <li><strong>Technology Leaders:</strong> Developers and platform creators</li>
+                <li><strong>Government Relations:</strong> Policy makers and regulators</li>
+            </ol>
+        </div>
+        
+        <h3>Private Investment Groups</h3>
+        
+        <h4>💰 High-Net-Worth Investor Networks</h4>
+        <ul>
+            <li><strong>Domain Investment Club:</strong> $1M+ minimum investment</li>
+            <li><strong>Premium Asset Syndicate:</strong> Exclusive deal sharing</li>
+            <li><strong>Portfolio Manager Network:</strong> Professional management services</li>
+            <li><strong>Family Office Consortium:</strong> Generational wealth strategies</li>
+            <li><strong>Hedge Fund Alliance:</strong> Alternative investment strategies</li>
+        </ul>
+        
+        <h4>🤝 Strategic Partnership Networks</h4>
+        <div style="background: #e7f3ff; padding: 15px; border-radius: 8px;">
+            <p><strong>Elite Partnership Opportunities:</strong></p>
+            <ul>
+                <li><strong>Corporate Development:</strong> Fortune 500 partnerships</li>
+                <li><strong>Technology Integration:</strong> Platform and tool partnerships</li>
+                <li><strong>Media Relationships:</strong> Exclusive story access</li>
+                <li><strong>Educational Alliances:</strong> University and research partnerships</li>
+                <li><strong>Government Relations:</strong> Policy influence networks</li>
+            </ul>
+        </div>
+        
+        <h3>Industry Leadership Networks</h3>
+        
+        <h4>🏆 Thought Leader Communities</h4>
+        <ul>
+            <li><strong>Domain Hall of Fame:</strong> Legendary investor network</li>
+            <li><strong>Innovation Council:</strong> Technology trend setters</li>
+            <li><strong>Policy Advisory Board:</strong> Regulatory influence group</li>
+            <li><strong>Research Consortium:</strong> Academic and industry research</li>
+            <li><strong>Speaker Bureau:</strong> Conference and event network</li>
+        </ul>
+        
+        <h4>📊 Data and Intelligence Networks</h4>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+            <p><strong>Exclusive Information Sharing:</strong></p>
+            <ul>
+                <li><strong>Market Intelligence Group:</strong> Private research sharing</li>
+                <li><strong>Transaction Database:</strong> Confidential sales data</li>
+                <li><strong>Trend Analysis Network:</strong> Early trend identification</li>
+                <li><strong>Risk Assessment Consortium:</strong> Shared due diligence</li>
+                <li><strong>Competitive Intelligence:</strong> Market participant tracking</li>
+            </ul>
+        </div>
+        
+        <h3>Global Network Access</h3>
+        
+        <h4>🌍 International Investment Networks</h4>
+        <ul>
+            <li><strong>European Domain Alliance:</strong> EU market access</li>
+            <li><strong>Asian Investment Syndicate:</strong> APAC opportunities</li>
+            <li><strong>Middle East Network:</strong> Emerging market access</li>
+            <li><strong>Latin American Group:</strong> Spanish-speaking markets</li>
+            <li><strong>African Development Network:</strong> Frontier market opportunities</li>
+        </ul>
+        
+        <h3>Exclusive Event Access</h3>
+        
+        <h4>🎪 VIP Conference Access</h4>
+        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;">
+            <p><strong>Private Event Invitations:</strong></p>
+            <ul>
+                <li><strong>Berkshire Hathaway Meetings:</strong> Warren Buffett networking</li>
+                <li><strong>World Economic Forum:</strong> Davos networking opportunities</li>
+                <li><strong>TED Conference Access:</strong> Innovation leader networks</li>
+                <li><strong>Private Equity Summits:</strong> Institutional investor access</li>
+                <li><strong>Technology Leadership Events:</strong> Silicon Valley insider access</li>
+            </ul>
+        </div>
+        
+        <h4>🏖️ Exclusive Retreats</h4>
+        <ul>
+            <li><strong>Private Island Workshops:</strong> Intimate strategy sessions</li>
+            <li><strong>Yacht Club Meetings:</strong> Luxury networking environments</li>
+            <li><strong>Mountain Resort Retreats:</strong> Think tank sessions</li>
+            <li><strong>Wine Country Gatherings:</strong> Relaxed relationship building</li>
+            <li><strong>International Study Tours:</strong> Global market exploration</li>
+        </ul>
+        
+        <h3>Network Activation Strategies</h3>
+        
+        <h4>🎯 Relationship Building Mastery</h4>
+        <ul>
+            <li><strong>Value-First Approach:</strong> Always lead with value</li>
+            <li><strong>Long-Term Thinking:</strong> Build for decades, not deals</li>
+            <li><strong>Reciprocity Principles:</strong> Give before you receive</li>
+            <li><strong>Trust Building:</strong> Reliability and consistency</li>
+            <li><strong>Authentic Connections:</strong> Genuine relationship focus</li>
+        </ul>
+        
+        <h4>💼 Professional Network Management</h4>
+        <div style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+            <p><strong>Network Management System:</strong></p>
+            <ul>
+                <li><strong>CRM Integration:</strong> Relationship tracking systems</li>
+                <li><strong>Regular Touchpoints:</strong> Systematic communication</li>
+                <li><strong>Value Delivery:</strong> Ongoing benefit provision</li>
+                <li><strong>Event Coordination:</strong> Bringing people together</li>
+                <li><strong>Information Sharing:</strong> Strategic intelligence distribution</li>
+            </ul>
+        </div>
+        
+        <h3>Network ROI Measurement</h3>
+        
+        <h4>📈 Network Value Metrics</h4>
+        <ul>
+            <li><strong>Deal Flow Generation:</strong> Opportunities from network</li>
+            <li><strong>Cost Reduction:</strong> Savings from relationships</li>
+            <li><strong>Information Value:</strong> Early access premium</li>
+            <li><strong>Partnership Revenue:</strong> Collaborative profits</li>
+            <li><strong>Reputation Enhancement:</strong> Brand value increase</li>
+        </ul>
+        
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <strong>🌐 Network Success Secret:</strong> Your network is your net worth. The most successful domain investors don't just have money - they have access to the right people at the right time. Relationships compound faster than money.
+        </div>
         """
     }
     
@@ -1900,21 +3174,6 @@ def view_guide(guide_name):
     </body>
     </html>
     """
-            .back-btn {{ background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <a href="/" class="back-btn">← Back to Dashboard</a>
-            <br><br>
-            {guide_content}
-        </div>
-    </body>
-    </html>
-    """
-
-if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
 
 @app.route('/portfolio')
 def portfolio():
@@ -2050,3 +3309,191 @@ def upgrade_me():
     </body>
     </html>
     """
+
+# Affiliate system route
+@app.route('/affiliate')
+def affiliate():
+    """Affiliate marketing system for promoting rizzosai.com"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    username = session.get('username', 'Unknown')
+    affiliate_id = f"rizzos-{username.lower().replace(' ', '')}"
+    
+    # Generate affiliate links
+    main_site_link = f"https://rizzosai.com?ref={affiliate_id}"
+    backoffice_link = f"https://backoffice.rizzosai.com?ref={affiliate_id}"
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Affiliate Program - Rizzos AI</title>
+        <style>
+            body {{ font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1000px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; }}
+            .back-btn {{ background: #e2e8f0; color: #4a5568; padding: 8px 16px; border-radius: 8px; text-decoration: none; display: inline-block; margin-bottom: 20px; }}
+            .affiliate-card {{ background: #f7fafc; border-radius: 10px; padding: 20px; margin: 15px 0; border-left: 4px solid #667eea; }}
+            .commission-rate {{ background: linear-gradient(135deg, #ff6b6b, #feca57); color: white; padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; }}
+            .link-box {{ background: #e2e8f0; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; }}
+            .copy-btn {{ background: #667eea; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; }}
+            .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }}
+            .stat-card {{ background: white; border: 2px solid #667eea; border-radius: 10px; padding: 20px; text-align: center; }}
+        </style>
+        <script>
+            function copyToClipboard(text) {{
+                navigator.clipboard.writeText(text).then(function() {{
+                    alert('Link copied to clipboard!');
+                }});
+            }}
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            
+            <h1>💰 Affiliate Program - Earn While You Share</h1>
+            <p>Promote Rizzos AI and earn commissions on every sale you generate!</p>
+            
+            <div class="commission-rate">
+                <h2>🎯 25% Commission on All Sales!</h2>
+                <p>Elite Package Sale: <strong>$124.99 per sale</strong></p>
+                <p>Empire Package Sale: <strong>$249.99 per sale</strong></p>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>👤 Your Affiliate Details</h3>
+                <p><strong>Affiliate ID:</strong> {affiliate_id}</p>
+                <p><strong>Status:</strong> Active Member</p>
+                <p><strong>Tier:</strong> {session.get('package', 'Basic')} Affiliate</p>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>🔗 Your Affiliate Links</h3>
+                
+                <h4>Main Website Link:</h4>
+                <div class="link-box">
+                    {main_site_link}
+                    <button class="copy-btn" onclick="copyToClipboard('{main_site_link}')">Copy</button>
+                </div>
+                
+                <h4>Backoffice Link:</h4>
+                <div class="link-box">
+                    {backoffice_link}
+                    <button class="copy-btn" onclick="copyToClipboard('{backoffice_link}')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📊 Clicks</h3>
+                    <h2>0</h2>
+                    <p>Total link clicks</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💰 Sales</h3>
+                    <h2>0</h2>
+                    <p>Successful conversions</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💵 Earnings</h3>
+                    <h2>$0.00</h2>
+                    <p>Total commissions</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📈 Conversion</h3>
+                    <h2>0%</h2>
+                    <p>Click to sale rate</p>
+                </div>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>🎯 Marketing Materials</h3>
+                <p><strong>Taglines to Use:</strong></p>
+                <ul>
+                    <li>"Discover the secrets of domain investing with Rizzos AI"</li>
+                    <li>"Learn how to build wealth through premium domain investing"</li>
+                    <li>"Join the elite circle of domain investors making 6-7 figures"</li>
+                    <li>"Transform your financial future with domain empire building"</li>
+                </ul>
+                
+                <p><strong>Key Selling Points:</strong></p>
+                <ul>
+                    <li>🎓 13 comprehensive domain investing guides</li>
+                    <li>🤖 AI-powered Coey assistant for personalized guidance</li>
+                    <li>💰 Proven strategies from successful domain investors</li>
+                    <li>🏆 Elite and Empire packages with exclusive content</li>
+                    <li>📈 Step-by-step portfolio building strategies</li>
+                </ul>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>📱 Social Media Templates</h3>
+                
+                <h4>Twitter/X Post:</h4>
+                <div class="link-box">
+                    💎 Just discovered the ultimate domain investing course! Learn how top investors build 6-7 figure portfolios. 13 guides + AI assistant included! {main_site_link} #DomainInvesting #PassiveIncome
+                    <button class="copy-btn" onclick="copyToClipboard('💎 Just discovered the ultimate domain investing course! Learn how top investors build 6-7 figure portfolios. 13 guides + AI assistant included! {main_site_link} #DomainInvesting #PassiveIncome')">Copy</button>
+                </div>
+                
+                <h4>LinkedIn Post:</h4>
+                <div class="link-box">
+                    Want to diversify your investment portfolio? Domain investing is generating incredible returns for those who know the secrets. I found this comprehensive course that teaches everything from first purchase to building a domain empire. Check it out: {main_site_link}
+                    <button class="copy-btn" onclick="copyToClipboard('Want to diversify your investment portfolio? Domain investing is generating incredible returns for those who know the secrets. I found this comprehensive course that teaches everything from first purchase to building a domain empire. Check it out: {main_site_link}')">Copy</button>
+                </div>
+                
+                <h4>Email Template:</h4>
+                <div class="link-box">
+                    Subject: How I'm Building Wealth Through Domain Investing
+
+Hi [Name],
+
+I wanted to share something exciting I discovered - a comprehensive domain investing course that's teaching people how to build serious wealth through premium domains.
+
+The course includes:
+• 13 in-depth strategy guides
+• AI-powered investment assistant
+• Real case studies and examples
+• Step-by-step portfolio building
+
+If you're looking for alternative investments that can generate passive income, this is worth checking out: {main_site_link}
+
+Best regards,
+{username}
+                    <button class="copy-btn" onclick="copyToClipboard('Subject: How I\\'m Building Wealth Through Domain Investing\\n\\nHi [Name],\\n\\nI wanted to share something exciting I discovered - a comprehensive domain investing course that\\'s teaching people how to build serious wealth through premium domains.\\n\\nThe course includes:\\n• 13 in-depth strategy guides\\n• AI-powered investment assistant\\n• Real case studies and examples\\n• Step-by-step portfolio building\\n\\nIf you\\'re looking for alternative investments that can generate passive income, this is worth checking out: {main_site_link}\\n\\nBest regards,\\n{username}')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>💡 Success Tips</h3>
+                <ul>
+                    <li><strong>Target the Right Audience:</strong> Entrepreneurs, investors, side-hustlers</li>
+                    <li><strong>Share Your Experience:</strong> Personal testimonials work best</li>
+                    <li><strong>Use Multiple Channels:</strong> Social media, email, blogs, forums</li>
+                    <li><strong>Provide Value First:</strong> Share domain investing tips, then promote</li>
+                    <li><strong>Track Your Results:</strong> Monitor which methods work best</li>
+                </ul>
+            </div>
+            
+            <div class="affiliate-card">
+                <h3>📋 Commission Terms</h3>
+                <ul>
+                    <li><strong>Commission Rate:</strong> 25% on all package sales</li>
+                    <li><strong>Cookie Duration:</strong> 30 days from click</li>
+                    <li><strong>Payment Schedule:</strong> Monthly payments via PayPal</li>
+                    <li><strong>Minimum Payout:</strong> $50.00</li>
+                    <li><strong>Tracking:</strong> Real-time dashboard updates</li>
+                </ul>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p><strong>Questions about the affiliate program?</strong></p>
+                <p>Contact us at <a href="mailto:affiliates@rizzosai.com">affiliates@rizzosai.com</a></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+if __name__ == '__main__':
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
