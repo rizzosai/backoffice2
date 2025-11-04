@@ -1,0 +1,12 @@
+# Rizzos AI Backoffice - Security & Data Protection
+.env
+*.pyc
+__pycache__/
+customers.json
+banned_users.json
+chat_memory.json
+.DS_Store
+.vscode/
+*.log
+node_modules/
+.pytest_cache/
