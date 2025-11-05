@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rizzos AI - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { background: #f8f9fa; padding: 15px; margin-bottom: 20px; }
+        .nav a { margin-right: 20px; text-decoration: none; color: #007cba; }
+        .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; }
+        .commission-item { background: #f0f8ff; padding: 10px; margin: 5px 0; border-left: 4px solid #007cba; }
+        .queue-status { background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/training">Training Center</a>
+        <a href="/queue-dashboard">Queue Status</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <h1>Welcome, {{ customer.email }}!</h1>
+    
+    <div class="card">
+        <h3>Your Package: {{ packages[package_level|string].name if package_level > 0 else 'Free Trial' }}</h3>
+        <p>Level: {{ package_level }}</p>
+        {% if package_level > 0 %}
+            <p>Price: ${{ packages[package_level|string].price }}/day</p>
+            <p>Features: {{ ', '.join(packages[package_level|string].features) }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Domain Management Section -->
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h3>🌐 Domain Management Center</h3>
+        <p>Manage your domains and hosting from your personal back office</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 20px;">
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                <h4>🏗️ Hosting Platform</h4>
+                <p>Deploy and manage your sites</p>
+                <a href="https://render.com" target="_blank" style="background: #46e3b7; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Access Render</a>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                <h4>🌍 Namecheap</h4>
+                <p>Premium domain registrar</p>
+                <a href="https://namecheap.com" target="_blank" style="background: #ff6c37; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Buy Domains</a>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                <h4>🚀 GoDaddy</h4>
+                <p>Alternative registrar</p>
+                <a href="https://godaddy.com" target="_blank" style="background: #1bbc9c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Register Now</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 15px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+            <h4>⚡ Quick Setup Guide</h4>
+            <ol style="margin: 10px 0;">
+                <li>Purchase your domain from Namecheap</li>
+                <li>Set up hosting on Render</li>
+                <li>Connect your domain to your Render app</li>
+                <li>Start earning with your new domain!</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Purchased Domains Section -->
+    {% if customer.purchased_domains %}
+    <div class="card" style="background: #f8f9fa; border-left: 4px solid #28a745;">
+        <h3>🌐 Your Purchased Domains</h3>
+        {% for domain in customer.purchased_domains %}
+        <div style="background: white; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #dee2e6;">
+            <h4 style="color: #28a745; margin: 0;">{{ domain.domain }}</h4>
+            <p style="margin: 5px 0;">Purchased: {{ domain.purchased_date[:10] }}</p>
+            <p style="margin: 5px 0;">Status: <span style="color: #28a745; font-weight: bold;">{{ domain.status.title() }}</span></p>
+            <div style="margin-top: 10px;">
+                <a href="https://render.com" target="_blank" style="background: #46e3b7; color: #000; padding: 8px 15px; text-decoration: none; border-radius: 4px; margin-right: 10px;">Deploy to Render</a>
+                <a href="https://ap.www.namecheap.com/domains/domaincontrolpanel/{{ domain.domain }}" target="_blank" style="background: #ff6c37; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">Manage DNS</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <h3>Commission Status</h3>
+        <p><strong>Total Earned:</strong> ${{ "%.2f"|format(commissions.total_earned) }}</p>
+        
+        {% if queue_position %}
+            <div class="queue-status">
+                <p><strong>Queue Position:</strong> #{{ queue_position }}</p>
+                <p>You'll earn commission from the next {{ 5 - ((queue_position - 1) % 5) }} customer purchases!</p>
+            </div>
+        {% else %}
+            <p>You're not currently in the commission queue. Make a purchase to join!</p>
+        {% endif %}
+        
+        {% if commissions.payments %}
+            <h4>Recent Payments:</h4>
+            {% for payment in commissions.payments[-5:] %}
+                <div class="commission-item">
+                    <strong>${{ "%.2f"|format(payment.amount) }}</strong> 
+                    from Level {{ payment.from_package_level }} purchase
+                    <br><small>{{ payment.date[:10] }}</small>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3>Affiliate Link</h3>
+        <p>Share this link to refer new customers:</p>
+        <input type="text" value="https://rizzosai.com/aff={{ customer.email.split('@')[0] }}" 
+               style="width: 100%; padding: 10px;" readonly onclick="this.select()">
+        <br><br>
+        <p><strong>Your Affiliate Code:</strong> {{ customer.email.split('@')[0] }}</p>
+    </div>
+</body>
+</html>

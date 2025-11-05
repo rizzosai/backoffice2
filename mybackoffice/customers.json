@@ -1,0 +1,45 @@
+{
+  "admin@rizzosai.com": {
+    "email": "admin@rizzosai.com",
+    "password": "admin123", 
+    "package_level": 6,
+    "signup_date": "2025-11-05T00:00:00",
+    "role": "admin"
+  },
+  "zap@test.com": {
+    "email": "zap@test.com",
+    "password": "test123",
+    "package_level": 5,
+    "signup_date": "2025-11-05T01:00:00"
+  },
+  "enterprise@test.com": {
+    "email": "enterprise@test.com", 
+    "password": "test123",
+    "package_level": 5,
+    "signup_date": "2025-11-05T02:00:00"
+  },
+  "empire@test.com": {
+    "email": "empire@test.com",
+    "password": "test123", 
+    "package_level": 4,
+    "signup_date": "2025-11-05T03:00:00"
+  },
+  "pro@test.com": {
+    "email": "pro@test.com",
+    "password": "test123",
+    "package_level": 3, 
+    "signup_date": "2025-11-05T04:00:00"
+  },
+  "starter@test.com": {
+    "email": "starter@test.com",
+    "password": "test123",
+    "package_level": 2,
+    "signup_date": "2025-11-05T05:00:00"
+  },
+  "basic@test.com": {
+    "email": "basic@test.com",
+    "password": "test123",
+    "package_level": 1,
+    "signup_date": "2025-11-05T06:00:00"
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RizzosAI Domain Rental - 5 Referral System</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        .patriotic { color: #b22234; font-weight: bold; }
+        .audio-box { margin: 20px 0; }
+        form { margin-top: 30px; }
+        label { display: block; margin-bottom: 8px; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #b22234; color: #fff; border: none; padding: 12px 25px; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        button:hover { background: #800000; }
+        .referral-info { background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="patriotic">Welcome to RizzosAI Domain Rentals!</h1>
+        <div class="audio-box">
+            <audio controls>
+                <source src="/static/welcome.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="referral-info">
+            <h2>How Our 5-Referral System Works</h2>
+            <ul>
+                <li>Rent a premium domain from us and get your own referral link.</li>
+                <li>Refer 5 people who also rent a domain.</li>
+                <li>Once your 5 referrals are confirmed, your next month is FREE!</li>
+                <li>Keep referring to earn more free months or other rewards.</li>
+            </ul>
+        </div>
+        <form id="domainForm" method="POST" action="/sales/domain-purchase">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" required>
+            <label for="domain">Desired Domain Name</label>
+            <input type="text" id="domain" name="domain" required>
+            {% if affiliate_code %}
+            <input type="hidden" name="affiliate_code" value="{{ affiliate_code }}">
+            <div style="margin-bottom:10px;color:#155724;background:#d4edda;padding:8px;border-radius:4px;">
+                Referral link: <b>{{ affiliate_code }}</b>
+                {% if affiliate_email %}<br>Affiliate Email: {{ affiliate_email }}{% endif %}
+            </div>
+            {% endif %}
+            <button type="submit">Rent My Domain</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('domainForm').addEventListener('submit', function(e) {
+            // Optionally add client-side validation or analytics here
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "1": {
+    "name": "Basic Starter",
+    "price": 29,
+    "billing": "daily",
+    "features": ["Premium Domain Space Rental", "Basic Subdomain Access", "SSL Security Included", "AI-Powered Landing Pages", "Next 5 Commission Access", "Domain Management Tools"]
+  },
+  "2": {
+    "name": "Starter Tools", 
+    "price": 97,
+    "billing": "daily",
+    "features": ["Enhanced Domain Features", "Custom Subdomain Options", "Advanced Traffic Analytics", "Priority Domain Support", "Enhanced Commission Tracking", "Multiple Page Templates"]
+  },
+  "3": {
+    "name": "Professional",
+    "price": 197, 
+    "billing": "daily",
+    "features": ["Premium Domain Portfolio Access", "Multiple Subdomain Management", "Advanced Hosting Features", "VIP Domain Support", "Enhanced Traffic Routing", "Professional SEO Tools"]
+  },
+  "4": {
+    "name": "Empire",
+    "price": 497,
+    "billing": "daily", 
+    "features": ["Premium Domain Authority", "Custom Domain Integration", "Enterprise-Level Hosting", "Dedicated Server Resources", "Priority Domain Expansion", "White-Label Options"]
+  },
+  "5": {
+    "name": "Enterprise",
+    "price": 999,
+    "billing": "daily",
+    "features": ["Full Domain Ownership Rights", "White-Label Domain Options", "Unlimited Subdomain Creation", "Your Own Domain Empire", "Maximum Commission Potential", "Dedicated Domain Manager"]
+  },
+  "6": {
+    "name": "Admin",
+    "price": 0,
+    "billing": "free",
+    "features": ["Full System Access", "All Domain Features", "Admin Dashboard", "Commission Management", "User Management", "Domain Portfolio Control"]
+  }
+}

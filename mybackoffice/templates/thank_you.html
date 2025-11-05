@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thank You - Rizzos AI</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container { max-width: 600px; margin: 0 auto; padding: 100px 20px; }
+        .success-box { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 50px; 
+            border-radius: 15px; 
+            backdrop-filter: blur(10px);
+        }
+        .checkmark { font-size: 4em; color: #4CAF50; margin-bottom: 20px; }
+        h1 { font-size: 2.5em; margin-bottom: 20px; }
+        p { font-size: 1.2em; margin-bottom: 15px; }
+        .next-steps { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 30px; 
+            border-radius: 10px; 
+            margin-top: 30px;
+            text-align: left;
+        }
+        .cta-button { 
+            background: #ff6b6b; 
+            color: white; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-size: 18px; 
+            display: inline-block; 
+            margin-top: 20px;
+        }
+        .cta-button:hover { background: #ff5252; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-box">
+            <div class="checkmark">✅</div>
+            <h1>Welcome to Rizzos AI!</h1>
+            <p>🎉 <strong>Your free access has been activated!</strong></p>
+            
+            {% if affiliate_code %}
+                <p>Thanks for joining {{ affiliate_code|title }}'s team!</p>
+            {% endif %}
+            
+            <p>Check your email in the next few minutes for:</p>
+            <ul style="text-align: left; max-width: 400px; margin: 20px auto;">
+                <li>🎬 Exclusive training videos</li>
+                <li>🔑 Your login credentials</li>
+                <li>💰 How to start earning with our "Next 5" system</li>
+                <li>🚀 Quick start guide</li>
+            </ul>
+            
+            <div class="next-steps">
+                <h3>🚀 What happens next?</h3>
+                <p><strong>Step 1:</strong> Watch the training videos we're sending to your email</p>
+                <p><strong>Step 2:</strong> Choose your package level (start with our 3-day free trial!)</p>
+                <p><strong>Step 3:</strong> Get your unique affiliate link and start earning</p>
+                <p><strong>Step 4:</strong> Learn how to embed forms and build your own pages</p>
+            </div>
+            
+            <a href="/" class="cta-button">🏠 Back to Homepage</a>
+        </div>
+    </div>
+    
+    <script>
+        // Optional: Add tracking pixels here for conversion tracking
+        console.log('Lead captured successfully');
+    </script>
+</body>
+</html>

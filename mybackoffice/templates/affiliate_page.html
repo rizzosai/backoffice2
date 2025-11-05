@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rizzos AI - Join {{ affiliate.email.split('@')[0] }}'s Team</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center; }
+        .hero { margin-bottom: 50px; }
+        .hero h1 { font-size: 3em; margin-bottom: 20px; }
+        .hero p { font-size: 1.2em; margin-bottom: 30px; }
+        .affiliate-info { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 30px;
+        }
+        .form-container { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 40px; 
+            border-radius: 15px; 
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+        .form-container h2 { margin-bottom: 20px; }
+        input { 
+            width: 100%; 
+            max-width: 300px;
+            padding: 15px; 
+            margin: 10px; 
+            border: none; 
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button { 
+            background: #ff6b6b; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 18px; 
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background: #ff5252; }
+        .features { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 50px; }
+        .feature { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 10px; max-width: 200px; }
+        .embed-instructions { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 30px; 
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="affiliate-info">
+            <h2>🌟 Referred by {{ affiliate.email.split('@')[0]|title }}</h2>
+            <p>You've been personally invited to join the Rizzos AI revolution!</p>
+        </div>
+        
+        <div class="hero">
+            <h1>🚀 Rizzos AI</h1>
+            <p>Revolutionary AI Tools That Transform Your Business</p>
+            <p>Join {{ affiliate.email.split('@')[0]|title }}'s team and start earning $97-$997 per day</p>
+        </div>
+        
+        <div class="form-container">
+            <h2>🎯 Get FREE Access + Bonus Training</h2>
+            <p>Enter your details below to unlock our AI toolkit and receive exclusive training videos</p>
+            
+            <form method="POST" action="/capture-lead">
+                <input type="text" name="first_name" placeholder="Your First Name" required>
+                <input type="email" name="email" placeholder="Your Best Email" required>
+                <input type="hidden" name="affiliate_ref" value="{{ affiliate_code }}">
+                <button type="submit">🔥 JOIN {{ affiliate.email.split('@')[0]|title|upper }}'S TEAM NOW</button>
+            </form>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🤖 AI Content Generator</h3>
+                <p>Create viral content in seconds</p>
+            </div>
+            <div class="feature">
+                <h3>💰 Fair Commission System</h3>
+                <p>Our "Next 5" system ensures everyone gets paid fairly</p>
+            </div>
+            <div class="feature">
+                <h3>📈 Business Tools</h3>
+                <p>Complete suite for online success</p>
+            </div>
+            <div class="feature">
+                <h3>🎓 Training & Support</h3>
+                <p>Learn how to embed forms and build your own pages</p>
+            </div>
+        </div>
+        
+        <div class="embed-instructions">
+            <h3>📝 Want to customize this page?</h3>
+            <p><strong>Affiliates:</strong> You can embed your own forms or customize this page! Here's how:</p>
+            <ol>
+                <li>Copy your Tello form embed code</li>
+                <li>Replace the action in the form to: <code>/capture-lead</code></li>
+                <li>Make sure to include the hidden field: <code>&lt;input type="hidden" name="affiliate_ref" value="{{ affiliate_code }}"&gt;</code></li>
+                <li>Host on your own domain and point it to this system</li>
+            </ol>
+            <p><em>Full instructions available in your backoffice training section!</em></p>
+        </div>
+    </div>
+</body>
+</html>

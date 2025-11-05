@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rizzos AI - Training Center</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { background: #f8f9fa; padding: 15px; margin-bottom: 20px; }
+        .nav a { margin-right: 20px; text-decoration: none; color: #007cba; }
+        .nav a.active { font-weight: bold; background: #007cba; color: white; padding: 5px 10px; border-radius: 3px; }
+        .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 5px; }
+        .video-section { background: #f0f8ff; padding: 20px; margin: 15px 0; border-radius: 5px; }
+        .video-placeholder { 
+            background: #333; 
+            color: white; 
+            padding: 60px 20px; 
+            text-align: center; 
+            border-radius: 5px; 
+            margin: 10px 0;
+        }
+        .code-block { 
+            background: #f4f4f4; 
+            padding: 15px; 
+            border-left: 4px solid #007cba; 
+            margin: 10px 0; 
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .tip { background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 5px; margin: 10px 0; }
+        .step { background: #d4edda; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #28a745; }
+        h3 { color: #007cba; }
+        .download-link { 
+            background: #28a745; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            display: inline-block; 
+            margin: 10px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/training" class="active">Training Center</a>
+        <a href="/queue-dashboard">Queue Status</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <h1>🎓 Rizzos AI Training Center</h1>
+    <p>Welcome {{ customer.email }}! Here's everything you need to succeed with Rizzos AI.</p>
+
+    <div class="card">
+        <h2>📹 Training Videos</h2>
+        <p><strong>Note:</strong> Due to embed restrictions, we provide multiple ways to access training videos:</p>
+        
+        <div class="video-section">
+            <h3>🎬 Video 1: Getting Started with Rizzos AI</h3>
+            <div class="video-placeholder">
+                🎥 VIDEO: "Welcome to Rizzos AI - Your First Steps"<br>
+                <small>Duration: 8 minutes</small>
+            </div>
+            <p><strong>Watch Options:</strong></p>
+            <a href="#" class="download-link">📱 Watch on Mobile</a>
+            <a href="#" class="download-link">💻 Watch on Desktop</a>
+            <a href="#" class="download-link">⬇️ Download MP4</a>
+            
+            <div class="tip">
+                <strong>💡 What you'll learn:</strong> Platform overview, package selection, first login, and dashboard navigation.
+            </div>
+        </div>
+
+        <div class="video-section">
+            <h3>🎬 Video 2: The "Next 5" Commission System Explained</h3>
+            <div class="video-placeholder">
+                🎥 VIDEO: "How Our Revolutionary Fair-Share System Works"<br>
+                <small>Duration: 12 minutes</small>
+            </div>
+            <p><strong>Watch Options:</strong></p>
+            <a href="#" class="download-link">📱 Watch on Mobile</a>
+            <a href="#" class="download-link">💻 Watch on Desktop</a>
+            <a href="#" class="download-link">⬇️ Download MP4</a>
+            
+            <div class="tip">
+                <strong>💡 What you'll learn:</strong> Why traditional affiliate systems fail, how our queue system prevents gaming, and how you earn fair commissions.
+            </div>
+        </div>
+
+        <div class="video-section">
+            <h3>🎬 Video 3: Building Your Affiliate Landing Page</h3>
+            <div class="video-placeholder">
+                🎥 VIDEO: "Create Custom Pages That Convert"<br>
+                <small>Duration: 15 minutes</small>
+            </div>
+            <p><strong>Watch Options:</strong></p>
+            <a href="#" class="download-link">📱 Watch on Mobile</a>
+            <a href="#" class="download-link">💻 Watch on Desktop</a>
+            <a href="#" class="download-link">⬇️ Download MP4</a>
+            
+            <div class="tip">
+                <strong>💡 What you'll learn:</strong> Custom page creation, form embedding, tracking setup, and conversion optimization.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🛠️ How to Embed Forms in Your Website</h2>
+        
+        <div class="step">
+            <h3>Step 1: Get Your Affiliate Code</h3>
+            <p>Your affiliate code is: <strong>{{ customer.email.split('@')[0] }}</strong></p>
+            <p>Your affiliate link is: <code>https://rizzosai.com/aff={{ customer.email.split('@')[0] }}</code></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Basic HTML Form</h3>
+            <p>Copy this code to embed a lead capture form on any website:</p>
+            <div class="code-block">
+&lt;form method="POST" action="https://rizzosai.com/capture-lead"&gt;
+    &lt;input type="text" name="first_name" placeholder="First Name" required&gt;
+    &lt;input type="email" name="email" placeholder="Email Address" required&gt;
+    &lt;input type="hidden" name="affiliate_ref" value="{{ customer.email.split('@')[0] }}"&gt;
+    &lt;button type="submit"&gt;Get Free Access&lt;/button&gt;
+&lt;/form&gt;
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Styled Form (Copy & Paste Ready)</h3>
+            <div class="code-block">
+&lt;div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 10px; text-align: center; color: white; font-family: Arial, sans-serif;"&gt;
+    &lt;h2&gt;🚀 Join My Rizzos AI Team&lt;/h2&gt;
+    &lt;p&gt;Get instant access to revolutionary AI tools&lt;/p&gt;
+    
+    &lt;form method="POST" action="https://rizzosai.com/capture-lead" style="margin-top: 20px;"&gt;
+        &lt;input type="text" name="first_name" placeholder="Your First Name" required 
+               style="width: 250px; padding: 15px; margin: 10px; border: none; border-radius: 5px; font-size: 16px;"&gt;&lt;br&gt;
+        &lt;input type="email" name="email" placeholder="Your Best Email" required 
+               style="width: 250px; padding: 15px; margin: 10px; border: none; border-radius: 5px; font-size: 16px;"&gt;&lt;br&gt;
+        &lt;input type="hidden" name="affiliate_ref" value="{{ customer.email.split('@')[0] }}"&gt;
+        &lt;button type="submit" style="background: #ff6b6b; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; margin-top: 10px;"&gt;
+            🔥 GET FREE ACCESS NOW
+        &lt;/button&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: WordPress Integration</h3>
+            <p>For WordPress sites:</p>
+            <ol>
+                <li>Go to your WordPress admin → Pages → Add New</li>
+                <li>Switch to "Text" or "HTML" mode</li>
+                <li>Paste the form code above</li>
+                <li>Publish and share your new landing page!</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📊 Tracking Your Success</h2>
+        
+        <div class="tip">
+            <strong>📈 Your Performance Metrics:</strong>
+            <ul>
+                <li><strong>Affiliate Link:</strong> rizzosai.com/aff={{ customer.email.split('@')[0] }}</li>
+                <li><strong>Commission Queue Position:</strong> Check your dashboard</li>
+                <li><strong>Total Earned:</strong> View in commission section</li>
+                <li><strong>Referral Tracking:</strong> All leads captured with your affiliate code</li>
+            </ul>
+        </div>
+
+        <h3>🎯 Best Practices for Maximum Conversions</h3>
+        <ul>
+            <li><strong>Target Audience:</strong> Entrepreneurs, online marketers, content creators</li>
+            <li><strong>Key Benefits to Highlight:</strong> AI automation, fair commission system, daily income potential</li>
+            <li><strong>Call-to-Action:</strong> Use urgency ("Limited spots", "Get started today")</li>
+            <li><strong>Social Proof:</strong> Mention the "Next 5" fairness system</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>📧 Email Follow-Up Sequences</h2>
+        <p>We automatically send follow-up emails to your leads. Here's what they receive:</p>
+        
+        <div class="step">
+            <h4>📧 Email 1: Welcome & Training (Immediate)</h4>
+            <p>Instant access email with login credentials and first training video</p>
+        </div>
+        
+        <div class="step">
+            <h4>📧 Email 2: Package Selection (Day 1)</h4>
+            <p>Explains package options and 3-day free trial offer</p>
+        </div>
+        
+        <div class="step">
+            <h4>📧 Email 3: Success Stories (Day 3)</h4>
+            <p>Case studies and testimonials from successful users</p>
+        </div>
+        
+        <div class="step">
+            <h4>📧 Email 4: Final Invitation (Day 7)</h4>
+            <p>Last chance to join with special bonus</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>❓ FAQ & Support</h2>
+        
+        <h3>Q: How do I customize my affiliate page?</h3>
+        <p>A: You can create your own landing page using the form code above, or request custom modifications through support.</p>
+        
+        <h3>Q: When do I get paid commissions?</h3>
+        <p>A: You earn when you're in the "Next 5" queue and someone makes a purchase. Check your queue position on the dashboard.</p>
+        
+        <h3>Q: Can I use other traffic sources?</h3>
+        <p>A: Yes! Use your affiliate link on social media, email lists, paid ads, or anywhere you promote online.</p>
+        
+        <h3>Q: How do I track my referrals?</h3>
+        <p>A: All leads captured with your affiliate code are tracked automatically. Check your dashboard for statistics.</p>
+    </div>
+
+    <div class="card">
+        <h2>🎥 Alternative Video Access</h2>
+        <p>If you're having trouble accessing videos, try these alternatives:</p>
+        
+        <div class="tip">
+            <h4>🔗 Direct Video Links:</h4>
+            <p><a href="mailto:support@rizzosai.com?subject=Video Access Request">📧 Email us for direct video links</a></p>
+            <p><a href="tel:+1234567890">📞 Call for phone support: (123) 456-7890</a></p>
+            <p><a href="https://t.me/rizzosai">📱 Join our Telegram for instant access</a></p>
+        </div>
+        
+        <div class="step">
+            <h4>📱 Mobile App Access</h4>
+            <p>Download our mobile app for offline video access:</p>
+            <a href="#" class="download-link">📱 iOS App Store</a>
+            <a href="#" class="download-link">🤖 Google Play</a>
+        </div>
+    </div>
+</body>
+</html>

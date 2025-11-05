@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rizzos AI - Queue Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { background: #f8f9fa; padding: 15px; margin-bottom: 20px; }
+        .nav a { margin-right: 20px; text-decoration: none; color: #007cba; }
+        .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; }
+        .queue-item { background: #f8f9fa; padding: 10px; margin: 5px 0; border-left: 4px solid #28a745; }
+        .completed-item { background: #d4edda; padding: 10px; margin: 5px 0; border-left: 4px solid #155724; }
+        .stats { display: flex; gap: 20px; }
+        .stat-box { background: #007cba; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/queue-dashboard">Queue Status</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <h1>Next 5 Commission Queue</h1>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <h3>{{ queue_data.queue|length }}</h3>
+            <p>In Queue</p>
+        </div>
+        <div class="stat-box">
+            <h3>{{ queue_data.completed|length }}</h3>
+            <p>Completed</p>
+        </div>
+        <div class="stat-box">
+            <h3>{{ queue_data.total_signups_processed }}</h3>
+            <p>Sales Processed</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Current Queue (Next 5 to Earn Commissions)</h3>
+        {% if queue_data.queue %}
+            {% for person in queue_data.queue[:5] %}
+                <div class="queue-item">
+                    <strong>Position {{ person.queue_position }}:</strong> {{ person.email }}
+                    <br><small>Level {{ person.package_level }} • Joined: {{ person.joined_queue[:10] }}</small>
+                </div>
+            {% endfor %}
+            
+            {% if queue_data.queue|length > 5 %}
+                <p><strong>{{ queue_data.queue|length - 5 }} more people</strong> waiting after the next 5...</p>
+            {% endif %}
+        {% else %}
+            <p>Queue is empty. First 5 customers to join will be in line for commissions!</p>
+        {% endif %}
+    </div>
+
+    {% if queue_data.completed %}
+        <div class="card">
+            <h3>Recently Completed (Earned Commissions)</h3>
+            {% for person in queue_data.completed[-10:] %}
+                <div class="completed-item">
+                    {{ person.email }} - Level {{ person.package_level }}
+                    <br><small>Earned commission • Originally joined: {{ person.joined_queue[:10] }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
